@@ -153,11 +153,6 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
             {
                 return Json(new { success = false });
             }
-
-
-            return View(parkingLot);
-
-
         }
 
         // GET: MyParkingLot/ParkingLot/Edit/5
