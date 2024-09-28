@@ -1,0 +1,56 @@
+﻿@model Customer
+<!-- CreateModal -->
+<div class="modal fade" id="customerCreateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增用戶</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body Createbody">
+                <form asp-action="Create" class="CreateForm" asp-route-id="@Model.UserId">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <span class="text-danger">必填</span>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <span class="text-danger">必填</span>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone" class="control-label"></label>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BlackCount" class="control-label"></label>
+                        <input asp-for="BlackCount" class="form-control" />
+                        <span asp-validation-for="BlackCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="IsBlack" class="control-label"></label>
+                        <select asp-for="IsBlack" class="form-control" asp-items="ViewBag.IsBlack"></select>
+                        <span asp-validation-for="IsBlack" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" value="Create" class="btn btnS">新增用戶<span></span></button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_CreatePartial", new Customer())
