@@ -3,21 +3,20 @@
 @{
     ViewData["Title"] = "用戶管理";
 }
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/2.1.7/css/dataTables.material.css" rel="stylesheet" />
+}
 
-<link href="~/css/mycustomer.css" rel="stylesheet" />
 <h1>@ViewData["Title"]</h1>
 
-<style>
-
-</style>
 <p>
-    <a asp-action="Create" class="btnS" data-bs-toggle="modal" data-bs-target="#customerCreateModal" id="customerCreateBtn">
+    <a asp-action="Create" id="CreateBtn" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CreateCust">
         <i class="fa-solid fa-user-plus"></i>
         新增
-        <span></span>
     </a>
 </p>
-<table class="table table-hover table-striped" id="CustTable">
+<table id="CustTable" class="mdl-data-table table-hover table-striped">
     <thead class="table-color">
         <tr>
             <th class="text-center">
@@ -42,7 +41,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+@*         @foreach (var item in Model)
         {
             <tr>
                 <td class="text-center">
@@ -72,31 +71,31 @@
                 </td>
             </tr>
         }
-    </tbody>
+ *@    </tbody>
 </table>
 <!-- CreateModal -->
-<div class="modal fade" id="customerCreateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="CreateCust" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">新增用戶</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="Createbody">
+            <div class="modal-body Createbody">
                 ...
             </div>
         </div>
     </div>
 </div>
 <!-- EditModal -->
-<div class="modal fade" id="customerEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="EditCust" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">編輯用戶</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="Editbody">
+            <div class="modal-body Editbody">
                 ...
             </div>
         </div>
@@ -105,5 +104,9 @@
 
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.material.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
     <script src="~/js/customer.min.js"></script>
 }

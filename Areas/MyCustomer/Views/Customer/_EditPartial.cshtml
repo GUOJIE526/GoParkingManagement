@@ -1,16 +1,15 @@
 ﻿@model Customer
 
-<form asp-action="Create" id="CreateForm">
+<form asp-action="Edit" id="EditForm" asp-route-id="@Model.UserId">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="UserId" />
     <div class="form-group">
         <label asp-for="Username" class="control-label"></label>
-        <span class="text-danger">必填</span>
         <input asp-for="Username" class="form-control" />
         <span asp-validation-for="Username" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Password" class="control-label"></label>
-        <span class="text-danger">必填</span>
         <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
@@ -35,6 +34,6 @@
         <span asp-validation-for="IsBlack" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <button type="submit" value="Create" class="btn btn-primary">新增用戶</button>
+        <button type="submit" value="Save" class="btn btn-primary">儲存修改</button>
     </div>
 </form>

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using MyGoParking.Models;
 
 namespace MyGoParking.Areas.MyCustomer.Controllers
@@ -21,10 +24,35 @@ namespace MyGoParking.Areas.MyCustomer.Controllers
             _context = context;
         }
 
+        private static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(password);  // 將密碼轉換為字節
+                byte[] hashBytes = sha256.ComputeHash(bytes);     // 計算SHA256雜湊值
+                return Convert.ToBase64String(hashBytes);         // 將雜湊值轉換為Base64字符串以便存儲
+            }
+        }
+
         // GET: MyCustomer/Customer
         public async Task<IActionResult> Index()
         {
             return View(await _context.Customer.ToListAsync());
+        }
+
+        public JsonResult IndexJson()
+        {
+            var Cust = _context.Customer.Select(c => new
+            {
+                userId = c.UserId,
+                username = c.Username,
+                password = HashPassword(c.Password),
+                email = c.Email,
+                phone = c.Phone,
+                blackCount = c.BlackCount,
+                isBlack = c.IsBlack ? "異常" : "正常"
+            });
+            return Json(Cust);
         }
 
         // GET: MyCustomer/Customer/Details/5
@@ -51,6 +79,16 @@ namespace MyGoParking.Areas.MyCustomer.Controllers
             return View();
         }
 
+        public IActionResult CreatePartial()
+        {
+            ViewData["IsBlack"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem {Text = "異常", Value = "True"},
+                new SelectListItem {Text = "正常", Value="False"},
+            }, "Value", "Text");
+            return PartialView("_CreatePartial");
+        }
+
         // POST: MyCustomer/Customer/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -60,6 +98,7 @@ namespace MyGoParking.Areas.MyCustomer.Controllers
         {
             if (ModelState.IsValid)
             {
+                customer.Password = HashPassword(customer.Password);
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
@@ -69,7 +108,25 @@ namespace MyGoParking.Areas.MyCustomer.Controllers
             {
                 return Json(new { success = false });
             }
-            return View(customer);
+        }
+
+        public async Task<IActionResult> EditPartial(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var customer = await _context.Customer.FindAsync(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            ViewData["IsBlack"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem {Text = "異常", Value = "True"},
+                new SelectListItem {Text = "正常", Value="False"},
+            }, "Value", "Text");
+            return PartialView("_EditPartial", customer);
         }
 
         // GET: MyCustomer/Customer/Edit/5

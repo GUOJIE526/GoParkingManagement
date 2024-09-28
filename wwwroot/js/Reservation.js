@@ -114,10 +114,6 @@ $(document).on('click', '.EditBtn',  async function () {
         let fetchResponse = await fetch($(this).attr('action'), {
             method: 'POST',
             body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',  // 用來標示這是一個 AJAX 請求
-                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()  // 防護 token
-            }
         });
 
         if (fetchResponse.ok) {
@@ -154,84 +150,3 @@ $(document).on('click', '.EditBtn',  async function () {
     $('#EditModal').modal('show');
 });
 
-
-//$(document).on('click', '.EditBtn', function () {
-//    var id = $(this).data('id'); // 獲取該筆資料的 ID
-//    $('.EditRes').load(`/MyReservation/Reservation/Edit/${id} #EditForm`, function () {
-//        function selfsubmitEvent() {
-//            $(document).off('submit', '#EditForm').one('submit', '#EditForm', function (e) {
-//                e.preventDefault(); // 防止默認提交行為
-//                $.ajax({
-//                    url: $(this).attr('action'), // 表單的 action URL
-//                    type: 'POST',
-//                    data: $(this).serialize(), // 將表單數據序列化
-//                    dataType: 'Json',
-//                    success: function (response) {
-//                        if (response.success) {
-//                            // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
-//                            $('#EditModal').modal('hide');
-//                            $('#reservationTable').DataTable().ajax.reload(null, false); // 刷新特定部分
-//                        } else {
-//                            // 如果失敗，動態替換SweetAlert，顯示錯誤
-//                            Swal.fire({
-//                                icon: "error",
-//                                title: "Oops...",
-//                                text: "請填入必填欄位!",
-//                            });
-//                            selfsubmitEvent();
-//                        }
-//                    }
-//                });
-//            });
-//        }
-//        selfsubmitEvent();
-//        $('#EditModal').modal('show');
-//    });
-//});
-
-//function Delete(id) {
-//    Swal.fire({
-//        title: "確認刪除？",
-//        text: "此操作無法恢復！",
-//        icon: "warning",
-//        showCancelButton: true,
-//        confirmButtonColor: "#3085d6",
-//        cancelButtonColor: "#d33",
-//        confirmButtonText: "是的，刪除它！"
-//    }).then((result) => {
-//        if (result.isConfirmed) {
-//            $.ajax({
-//                url: `/MyReservation/Reservation/Delete/${id}`,  // 刪除請求的 URL
-//                type: 'POST',
-//                data: {
-//                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-//                },
-//                success: function (response) {
-//                    if (response.success) {
-//                        Swal.fire({
-//                            icon: "success",
-//                            title: "刪除成功",
-//                            showConfirmButton: false,
-//                            timer: 1500
-//                        });
-//                        // 局部刷新 DataTable
-//                        $('#reservationTable').DataTable().ajax.reload(null, false);
-//                    } else {
-//                        Swal.fire({
-//                            icon: "error",
-//                            title: "Oops...",
-//                            text: response.message
-//                        });
-//                    }
-//                },
-//                error: function (xhr, status, error) {
-//                    Swal.fire({
-//                        icon: "error",
-//                        title: "刪除失敗",
-//                        text: "請檢查您的網絡連接或重新嘗試。"
-//                    });
-//                }
-//            });
-//        }
-//    });
-//}
