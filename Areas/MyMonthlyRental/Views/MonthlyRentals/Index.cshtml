@@ -1,0 +1,410 @@
+﻿@model IEnumerable<MyGoParking.Models.MonthlyRental>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <!-- Tabulator 的樣式 -->
+    <link href="https://cdn.jsdelivr.net/npm/tabulator-tables@5.0.7/dist/css/tabulator.min.css" rel="stylesheet">
+    <style>
+
+        #parking-table{
+            border:none;
+        }
+
+        .tabulator-col {
+            background-color: white !important;
+            
+            color: black;
+            font-size: 16px;
+            text-align: center;
+            border:none !important;
+        }
+
+        .tabulator-cell {
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            border-bottom: 1px solid #ccc !important; /* 下方格線 */
+        }
+    </style>
+}
+
+<h1>月租管理</h1>
+
+<div class="d-flex justify-content-between align-item-center mb-3">
+    <button type="button" id="CreateBtn" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
+        <i class="fa-solid fa-folder-plus fa-beat-fade"></i> 新增
+    </button>
+    <input type="text" id="searchRental" placeholder="請輸入關鍵字">
+</div>
+
+<div id="date-filter-panel">
+    <label for="startDate-filter">開始日期：</label>
+    <input type="date" id="startDate-filter">
+    <label for="endDate-filter">結束日期：</label>
+    <input type="date" id="endDate-filter">
+    <button id="apply-date-filter">篩選日期</button>
+</div>
+
+<!-- Tabulator表格容器 -->
+<div id="parking-table"></div>
+<div class="mt-1"id="record-count">總筆數: 0</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="yooo">
+                <!-- 這裡會載入 #CreateForm 的內容 -->
+            </div>
+            <!-- Optional: Add footer if needed -->
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="RentalEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">編輯</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="nooo">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/tabulator-tables@5.0.7/dist/js/tabulator.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 初始化 Tabulator
+            var table = new Tabulator("#parking-table", {
+                ajaxURL: "@Url.Action("GetRentalData", "MonthlyRentals")",
+                columns: [
+                    { title: "停車場名稱", field: "lotName", width: 150, headerFilter: "input" },
+                    { title: "車位號碼", field: "slotNumber", width: 100, headerFilter: "input" },
+                    { title: "車牌號碼", field: "plate", width: 150, headerFilter: "input" },
+                    { title: "開始日期", field: "startDate", width: 150 },
+                    { title: "結束日期", field: "endDate", width: 150 },
+                    { title: "月租費用", field: "amount", width: 150 },
+                    { title: "付款日期", field: "paymentTime", width: 150 },
+                    { title: "付款狀態", field: "paymentStatus", width: 100, headerFilter: "select", headerFilterParams: { true: "已付款", false: "未付款" } },  // 下拉選單篩選器 },
+                    { title: "通知狀態", field: "notificationStatus", width: 100 },
+                    {
+                        title: "Actions",
+                        field: "actions",
+                        width: 100,
+                        hozAlign: "center",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            var id = cell.getRow().getData().id;
+                            console.log(id)
+                            return `<button type="button" class="RentalEditBtn btn" data-id="${id}" data-bs-toggle="modal" data-bs-target="#RentalEditModal"><i class="fa-regular fa-pen-to-square mr-1" style="font-size:18px"></i></button>`;
+                        }
+                    }
+                ],
+                pagination: "local",
+                paginationSize: 10,
+                paginationSizeSelector: [10, 25, 50, 100],
+                rowClick: function (e, row) {
+                    console.log("Row clicked:", row.getData());
+                },
+                ajaxResponse: function (url, params, response) {
+                    // 當資料加載完成後顯示總筆數
+                    updateRecordCount(response.length);
+                    return response;
+                },
+                dataFiltered: function (filters, rows) {
+                    // 篩選資料後顯示篩選後的總筆數
+                    updateRecordCount(rows.length);
+                }
+            });
+
+            // 監聽篩選後更新筆數
+            table.on("dataFiltered", function (filters, rows) {
+                updateRecordCount(rows.length);
+            });
+
+            // 訂單搜尋功能(暫時不用)
+            $("#searchRental").on("keyup", function () {
+                console.log(this.value);
+                table.setFilter("lotName", "like", this.value);
+                table.setFilter("plate", "like", this.value);
+                // 更新筆數
+                updateRecordCount(table.getData().length);
+            });
+
+            // 日期篩選功能
+            $("#apply-date-filter").on("click", function () {
+                var startDate = $("#startDate-filter").val();
+                var endDate = $("#endDate-filter").val();
+                // 更新筆數
+                table.on("dataFiltered", function (data) {
+                    updateRecordCount(data.length);
+                });
+                table.setFilter(function (data) {
+                    // 將 datetime 轉換為只包含日期部分的 yyyy-mm-dd
+                    var dataStartDate = new Date(data.startDate).setHours(0, 0, 0, 0);  // 將時間設為 00:00:00
+                    var dataEndDate = new Date(data.endDate).setHours(0, 0, 0, 0);  // 將時間設為 00:00:00
+
+                    var filterStartDate = startDate ? new Date(startDate).setHours(0, 0, 0, 0) : null;
+                    var filterEndDate = endDate ? new Date(endDate).setHours(0, 0, 0, 0) : null;
+
+                    return (!startDate || dataStartDate >= filterStartDate) && (!endDate || dataEndDate <= filterEndDate);
+                });
+                
+            });
+
+            // 更新總筆數的函數
+            function updateRecordCount(count) {
+                document.getElementById("record-count").innerText = "總筆數: " + count;
+            }
+        });
+
+
+        // Sweet Alert
+        var getSlotsByLotNameUrl = "@Url.Action("GetSlotsByLotName", "MonthlyRentals", new { area = "MyMonthlyRental" })";
+        var LoadSlotsByLotNameUrl = "@Url.Action("LoadSlotsByLotName", "MonthlyRentals", new { area = "MyMonthlyRental" })";
+
+        // 動態加載 Create 內容
+        $('#CreateBtn').on('click', function () {
+            // 先載入模態視窗內容
+            $('#yooo').load('/MyMonthlyRental/MonthlyRentals/Create #CreateForm', function () {
+                // 確保模態視窗顯示
+                $('#myModal').modal('show');
+
+                // 設定表單的提交事件
+                $('#CreateForm').on('submit', function (e) {
+                    e.preventDefault(); // 防止默認提交行為
+                    $.ajax({
+                        url: $(this).attr('action'), // 表單的 action URL
+                        type: 'POST',
+                        data: $(this).serialize(), // 將表單數據序列化
+                        dataType: 'Json',
+                        success: function (response) {
+                            if (response.success) {
+                                // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
+                                $('#myModal').modal('hide');
+                                location.reload(); // 刷新特定部分
+                            } else {
+                                // 如果失敗，動態替換SweetAlert，顯示錯誤
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: response.errors.join(", "),
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log('Error:', error);
+                        }
+                    });
+                });
+
+
+                //預設停車場之可選停車位顯示
+                var initialLotName = $('#selectLotName').val();
+
+                if (initialLotName) {
+                    $.ajax({
+                        url: getSlotsByLotNameUrl,
+                        type: 'GET',
+                        data: { lotName: initialLotName },
+                        dataType: 'Json',
+                        success: function (data) {
+                            var selectSlotNumber = $('#SelectSlotNumber');
+                            selectSlotNumber.empty(); // 清空現有選項
+
+                            // 將所有車位號碼加到下拉選項
+                            $.each(data, function (index, item) {
+                                selectSlotNumber.append($('<option>', {
+                                    value: item.value,
+                                    text: item.text
+                                }));
+                            });
+
+                            // 手動觸發 change 事件，確保 DOM 更新
+                            selectSlotNumber.trigger('change');
+                        },
+                        error: function (xhr, status, error) {
+                            console.log('Error:', error);
+                        }
+                    });
+                }
+
+                //當選擇停車場改變，可選車位亦要更動
+                $('#selectLotName').on('change', function () {
+                    var lotName = $(this).val();
+
+                    if (lotName) {
+                        // 發送 AJAX 請求獲取相應的車位號碼列表
+                        $.ajax({
+                            url: getSlotsByLotNameUrl,
+                            type: 'GET',
+                            data: { lotName: lotName },
+                            dataType: 'Json',
+                            success: function (data) {
+                                var selectSlotNumber = $('#SelectSlotNumber');
+                                selectSlotNumber.empty(); // 清空現有選項
+
+                                // 將所有車位號碼加到下拉選項
+                                $.each(data, function (index, item) {
+                                    selectSlotNumber.append($('<option>', {
+                                        value: item.value,
+                                        text: item.text
+                                    }));
+                                });
+
+                                // 手動觸發 change 事件，確保 DOM 更新
+                                selectSlotNumber.trigger('change');
+                            },
+                            error: function (xhr, status, error) {                                
+                                console.log('Error:', error);
+                            }
+                        });
+                    } else {
+                        // 如果沒有選擇，清空下拉選單
+                        $('#SelectSlotNumber').empty().append('<option value="">請選擇車位</option>');
+                    }
+                });
+
+            });
+        });
+
+
+        //動態加載edit內容
+        $(document).on('click', '.RentalEditBtn', function () {
+            var id = $(this).data('id');
+            console.log(id);
+            $('#nooo').load(`/MyMonthlyRental/MonthlyRentals/Edit/${id} #RentalEditForm`, function (response, status, xhr) {
+                if (status == "success") {
+                    var lotNameFromResponse = $(response).find('#selectLotName').val();
+                    var slotNumberFromResponse = $(response).find('#SelectSlotNumber').val();
+                    console.log("Lot Name from response:", lotNameFromResponse);
+                    console.log(slotNumberFromResponse);
+                    
+                    // 設置選擇的停車場名稱
+                    $('#selectLotName').val(lotNameFromResponse).trigger('change');
+                    loadSlotsByLotName(lotNameFromResponse, slotNumberFromResponse);
+                    $(document).on('submit', '#RentalEditForm', function (e) {
+                        e.preventDefault(); // 防止默認提交行為
+                        $.ajax({
+                            url: $(this).attr('action'), // 表單的 action URL
+                            type: 'POST',
+                            data: $(this).serialize(), // 將表單數據序列化
+                            dataType: 'Json',
+                            success: function (response) {
+                                if (response.success) {
+                                    // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
+                                    $('#ApplyEditModal').modal('hide');
+                                    location.reload(); // 刷新特定部分
+                                } else {
+                                    // 如果失敗，動態替換SweetAlert，顯示錯誤
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: response.errors.join(", "),
+                                    });
+                                }
+                            }
+                        });
+                    });
+                }                
+                $('#ApplyEditModal').modal('show');
+
+
+                //當選擇停車場改變，可選車位亦要更動
+                $('#selectLotName').on('change', function () {
+                    var lotName = $(this).val();
+
+                    if (lotName) {
+                        // 發送 AJAX 請求獲取相應的車位號碼列表
+                        $.ajax({
+                            url: getSlotsByLotNameUrl,
+                            type: 'GET',
+                            data: { lotName: lotName },
+                            dataType: 'Json',
+                            success: function (data) {
+                                var selectSlotNumber = $('#SelectSlotNumber');
+                                selectSlotNumber.empty(); // 清空現有選項
+
+                                // 將所有車位號碼加到下拉選項
+                                $.each(data, function (index, item) {
+                                    selectSlotNumber.append($('<option>', {
+                                        value: item.value,
+                                        text: item.text
+                                    }));
+                                });
+
+                                // 手動觸發 change 事件，確保 DOM 更新
+                                selectSlotNumber.trigger('change');
+                            },
+                            error: function (xhr, status, error) {                                
+                                console.log('Error:', error);
+                            }
+                        });
+                    } else {
+                        // 如果沒有選擇，清空下拉選單
+                        $('#SelectSlotNumber').empty().append('<option value="">請選擇車位</option>');
+                    }
+                });
+
+
+            });
+        });
+
+
+        // 根據停車場名稱加載車位
+        function loadSlotsByLotName(lotName,slotNumber) {
+            if (lotName) {
+                $.ajax({
+                    url: LoadSlotsByLotNameUrl,
+                    type: 'GET',
+                    data: { lotName: lotName, SlotNumber:slotNumber },
+                    dataType: 'Json',
+                    success: function (data) {
+                        var selectSlotNumber = $('#SelectSlotNumber');
+                        selectSlotNumber.empty(); // 清空現有選項
+
+                        // 將所有車位號碼加到下拉選項
+                        $.each(data, function (index, item) {
+                            selectSlotNumber.append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+
+                        // 手動觸發 change 事件，確保 DOM 更新
+                        selectSlotNumber.trigger('change');
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            } else {
+                // 如果沒有選擇，清空下拉選單
+                $('#SelectSlotNumber').empty().append('<option value="">請選擇車位</option>');
+            }
+        }
+    </script>
+    
+}

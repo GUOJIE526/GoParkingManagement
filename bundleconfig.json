@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "wwwroot/css/myLoginStyle.min.css",
+    "inputFiles": [
+      "wwwroot/css/myLoginStyle.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/myCustomer.min.css",
+    "inputFiles": [
+      "wwwroot/css/myCustomer.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/Customer.min.js",
+    "inputFiles": [
+      "wwwroot/js/Customer.js"
+    ]
+  }
+]

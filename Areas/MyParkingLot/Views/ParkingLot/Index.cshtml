@@ -1,0 +1,308 @@
+﻿@model IEnumerable<MyGoParking.Models.ParkingLot>
+
+
+@{
+    ViewData["Title"] = "停車場管理";
+}
+
+@section Styles{
+    <style>
+   
+    </style>
+}
+
+<h1>停車場管理</h1>
+
+<p>
+    <a id="CreateBtn" class="btn" data-bs-toggle="modal" data-bs-target="#CreateModal"><i class="fs-3 fa-solid fa-square-plus my-4" style="color: #090f3e"></i></a>
+</p>
+
+<table class="table table-hover ParkingLotTable" id="ParkingLot_table" style="">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LotName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LotAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Etcqty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Monqty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsResStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsMonStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contract)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LotName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LotAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Etcqty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Monqty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsResStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsMonStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contract)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.LotId" class="" id="EditBtn" data-id="@item.LotId" data-bs-toggle="modal" data-bs-target="#EditModal"><i class="fs-5 fa-solid fa-pen-to-square" style="color:#090f3e"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.LotId" class="" id="DetailsBtn" data-id="@item.LotId" data-bs-toggle="modal" data-bs-target="#DetailsModal"><i class="fs-5 fa-solid fa-circle-info" style="color:#090f3e"></i></a>
+                    @* <a asp-action="Delete" asp-route-id="@item.LotId"><i class="fs-4 fa-solid fa-trash-can" style="color: #090f3e;"></i></a> *@
+                    <a class="btn" onclick="Delete(@item.LotId)"><i class="fs-5 fa-solid fa-trash-can" style="color: #090f3e;"></i></a>                   
+                    <form id="parkinglot-@item.LotId" action="/MyParkingLot/ParkingLot/Delete/@item.LotId" method="post" style="display:none;">
+                        @Html.AntiForgeryToken()
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Create Modal -->
+<div class="modal fade" id="CreateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-Createbody">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">編輯</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-Editbody">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Details Modal -->
+<div class="modal fade" id="DetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">停車場資訊</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-Detailbody">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+
+    <script>
+        //JQuery dataTable
+        $(document).ready(function () {
+            $('.ParkingLotTable').dataTable({
+                // ajax:{
+                //     type:"GET",
+                //     url:"/MyParkingLot/Parkinglot/IndexJson",
+                //     dataSrc: function(json){
+                //         return json;
+                //     },
+                // },
+                // columns:[
+                //     {"data":"lotId", "width": "10%"},
+                //     {"data":"lotName", "width": "10%"},
+                //     {"data":"lotAddress", "width": "10%"},
+                //     {"data":"qty", "width": "10%"},
+                //     {"data":"etcqty", "width": "10%"},
+                //     {"data":"monqty", "width": "10%"},
+                //     {"data":"isResStatus", "width": "10%"},
+                //     {"data":"isMonStatus", "width": "10%"},
+                //     {"data":"contract", "width": "10%"},
+                //     {"data":"entryExitManagement", "width": "10%"},
+                //     {"data":"monApplyList", "width": "10%"},
+                //     {"data":"monthlyRental", "width": "10%"},
+                //     {"data":"parkingSlot", "width": "10%"},
+                //     {"data":"reservation", "width": "10%"},
+                // ],
+                "pagingType": "full_numbers",
+                fixedHeader: {
+                    header: true
+                },
+                scrollY: 650,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/zh-HANT.json',
+                },
+            });
+        });
+
+        //動態加載Create內容
+        $('#CreateBtn').on('click', function () {
+            $('.modal-Createbody').load('/MyParkingLot/ParkingLot/Create #CreateForm', function () {
+                function submiEvent(){
+                    $(document).one('submit', '#CreateForm', function (e) {
+                        e.preventDefault(); // 防止默認提交行為
+                        var formData = new FormData(this);
+                        $.ajax({
+                            url: $(this).attr('action'), // 表單的 action URL
+                            type: 'POST',
+                            data: formData, // 將表單數據序列化
+                            contentType: false,
+                            processData: false,
+                            dataType: 'Json',
+                            success: function (response) {
+                                console.log(response);
+                                if (response.success) {
+                                    // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
+                                    console.log(response);
+                                    $('#CreateModal').modal('hide');
+                                    location.reload(); // 刷新特定部分
+                                } else {
+                                    // 如果失敗，動態替換SweetAlert，顯示錯誤
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "請填入必填欄位!",
+                                    });
+                                    submiEvent();
+                                }
+                            }
+                        });
+                    });
+                }
+                submiEvent();
+                $('#CreateModal').modal('show');
+            });
+        });
+            //動態加載Edit內容
+        $(document).on('click', '#EditBtn', function () {
+            var id = $(this).data('id'); // 獲取該筆資料的 ID
+            $('.modal-Editbody').load(`/MyParkingLot/ParkingLot/Edit/${id} #EditForm`, function () {
+                function EditSubmit() {
+                    $(document).one('submit', '#EditForm', function (e) {
+                        e.preventDefault(); // 防止默認提交行為
+                        var formData = new FormData(this);
+                        $.ajax({
+                            url: $(this).attr('action'), // 表單的 action URL
+                            type: 'POST',
+                            data: formData, // 將表單數據序列化
+                            contentType: false,
+                            processData: false,
+                            dataType: 'Json',
+                            success: function (response) {
+                                if (response.success) {
+                                    // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
+                                    $('#EditModal').modal('hide');
+                                    location.reload(); // 刷新特定部分
+                                } else {
+                                    // 如果失敗，動態替換SweetAlert，顯示錯誤
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "請填入必填欄位!",
+                                    });
+                                    EditSubmit();
+                                }
+                            }
+                        });
+                    });
+                }
+                EditSubmit();
+                $('#EditModal').modal('show');
+            });
+        });
+        //動態加載Details內容
+        $(document).on('click', '#DetailsBtn', function () {
+            var id = $(this).data('id'); // 獲取該筆資料的 ID
+            $('.modal-Detailbody').load(`/MyParkingLot/ParkingLot/Details/${id} #DetailsDl`, function () {
+                // $(document).on('submit', '#DetailsDl', function (e) {
+                //     e.preventDefault(); // 防止默認提交行為
+                //     $.ajax({
+                //         url: $(this).attr('action'), // 表單的 action URL
+                //         type: 'POST',
+                //         data: $(this).serialize(), // 將表單數據序列化
+                //         success: function (response) {
+                //             if (response.success) {
+                //                 // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
+                //                 $('#DetailsModal').modal('hide');
+                //                 location.reload(); // 刷新特定部分
+                //             } else {
+                //                 // 如果失敗，動態替換SweetAlert，顯示錯誤
+                //                 Swal.fire({
+                //                     icon: "error",
+                //                     title: "Oops...",
+                //                     text: "請填入必填欄位!",
+                //                 });
+                //             }
+                //         }
+                //     });
+                // });
+                $('#DetailsModal').modal('show');
+            });
+        });
+
+        function Delete(id) {
+            Swal.fire({
+                title: "你確定要刪除嗎?",
+                text: "刪除後無法復原!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "刪除!",
+                        text: "資料已刪除",
+                        icon: "success"
+                    }).then(confirm => {
+                        if (confirm.isConfirmed) {
+                            document.getElementById('parkinglot-' + id).submit();
+                        }
+                    })
+
+                }
+            });
+        }
+
+    </script>
+}
+
+

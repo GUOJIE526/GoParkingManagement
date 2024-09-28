@@ -1,0 +1,68 @@
+﻿@model Reservation
+
+<form asp-action="Create" id="CreateForm" class="col-md-12">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="LotId" class="control-label"></label>
+        <select asp-for="LotId" class="form-control" asp-items="ViewBag.LotId"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="CarId" class="control-label"></label>
+        <input type="text" id="LicensePlate" name="LicensePlate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ReservationTime" class="control-label"></label>
+        <span style="color:red">必填</span>
+        <input asp-for="ReservationTime" class="form-control" />
+        <span asp-validation-for="ReservationTime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ValidUntil" class="control-label"></label>
+        <input asp-for="ValidUntil" class="form-control" />
+        <span asp-validation-for="ValidUntil" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DepositStatus" class="control-label"></label>
+        <select asp-for="DepositStatus" class="form-control" asp-items="ViewBag.DepositStatus"></select>
+        <span asp-validation-for="DepositStatus" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsOverdue" class="control-label"></label>
+        <select asp-for="IsOverdue" class="form-control" asp-items="ViewBag.IsOverdue"></select>
+        <span asp-validation-for="IsOverdue" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsCanceled" class="control-label"></label>
+        <select asp-for="IsCanceled" class="form-control" asp-items="ViewBag.IsCanceled"></select>
+        <span asp-validation-for="IsCanceled" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NotificationStatus" class="control-label"></label>
+        <select asp-for="NotificationStatus" class="form-control" asp-items="ViewBag.NotificationStatus"></select>
+        <span asp-validation-for="NotificationStatus" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Amount" class="control-label"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsRefoundDeposit" class="control-label"></label>
+        <select asp-for="IsRefoundDeposit" class="form-control" asp-items="ViewBag.IsRefoundDeposit"></select>
+        <span asp-validation-for="IsRefoundDeposit" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsFinish" class="control-label"></label>
+        <select asp-for="IsFinish" class="form-control" asp-items="ViewBag.IsFinish"></select>
+        <span asp-validation-for="IsFinish" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

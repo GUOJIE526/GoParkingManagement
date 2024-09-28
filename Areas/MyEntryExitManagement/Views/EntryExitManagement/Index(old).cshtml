@@ -1,0 +1,105 @@
+﻿@model IEnumerable<MyGoParking.Models.EntryExitManagement>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Parktype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlatePhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlateKeyinTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExitTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFinish)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Parktype)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LicensePlatePhoto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EntryTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LicensePlateKeyinTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExitTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValidTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.CarId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lot.LotId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsFinish)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EntryexitId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.EntryexitId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EntryexitId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<!-- #endregion -->

@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-MyGoParking-9be6e17f-f324-4ba3-94e1-6574a576b8f5</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\MyParkingLot\ViewModels\**" />
+    <Content Remove="Areas\MyParkingLot\ViewModels\**" />
+    <EmbeddedResource Remove="Areas\MyParkingLot\ViewModels\**" />
+    <None Remove="Areas\MyParkingLot\ViewModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\js\create.js" />
+    <Content Remove="wwwroot\js\MonthlyRentalCreate.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\MyEntryExitManagement\images\" />
+    <Folder Include="wwwroot\Contract\" />
+    <Folder Include="wwwroot\Contract\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\AHY9777.png" />
+    <None Include="wwwroot\js\Picture.js" />
+  </ItemGroup>
+
+</Project>

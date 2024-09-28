@@ -1,0 +1,185 @@
+﻿@{
+    bool isLoggedIn = User.Identity.IsAuthenticated;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MyGoParking</title>
+
+    <link href="~/sidebar/css/sb-admin-2.min.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"asp-append-version="true" />
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/sweetalert2/sweetalert2.all.min.js" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyGoParking.styles.css" asp-append-version="true" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="~/css/layout.css" rel="stylesheet" />
+    @await RenderSectionAsync("Styles", required: false)
+    <style>
+        .btn-mygo {
+            color: #fff;
+            background-color: #d4c0ec;
+            border-color: #d4c0ec;
+        }
+
+        .btn-mygoTop {
+            color: #d4c0ec;
+        }
+
+        .btn-mygo:hover{
+            color: #fff;
+            background: #b8a7cd;
+            border-color: #b8a7cd;
+        }
+        #sidebarToggle {
+            color: #4f4f4f;
+            background-color: #d4c0ec;
+            border-color: #d4c0ec;
+        }
+        #sidebarToggle:hover {
+            color: #fff;
+            background: #b8a7cd;
+            border-color: #b8a7cd;
+        }
+
+        .fa-car-side:hover {
+            color: #0097b2;
+        }
+
+        .fa-user-group:hover {
+            color: #5271ff;
+        }
+
+        .fa-car-tunnel:hover{
+            color: #0cc0df;
+        }
+
+        .fa-wallet:hover {
+            color: #6a66bd;
+        }
+
+        .fa-calendar-days:hover {
+            color:#ff914d;
+        }
+
+        .fa-square-parking:hover {
+            color:#004aad;
+        }
+
+        .fa-braille:hover {
+            color: #0097b2;
+        }
+
+        .fa-book:hover {
+            color: #5271ff;
+        }
+        
+    </style>
+
+</head>
+
+<body id="page-top">
+    <div class="wrapper bg-mygobar d-flex justify-content-between">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center flex-column flex-lg-row" asp-area="" asp-controller="Home" asp-action="Index" style="text-decoration:none">
+            <div class="sidebar-brand-icon my-3 ms-3 g-5">
+                @* <i class="fas fa-laugh-wink"></i> *@
+                <img src="~/images/LOGO_MYGO(transparent).png" style="width:30px;height:30px"/>
+            </div>
+            <div class="mx-3" style="font-size:15px;color:#d4c0ec;">mygoparKinG.</div>
+        </a>
+        <partial name="_LoginPartial" />
+
+    </div>
+    <div id="wrapper">
+        <ul class="navbar-nav bg-gradient-white sidebar sidebar-dark accordion" id="accordionSidebar">
+            @* <hr class="sidebar-divider my-0"> *@
+        @if (isLoggedIn)
+        {
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyParkingLot" asp-controller="ParkingLot" asp-action="Index"><i class="fa-solid fa-square-parking fs-2 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">停車場管理</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyCustomer" asp-controller="Customer" asp-action="Index"><i class="fa-solid fa-user-group fs-3 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">用戶管理</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyEwallet" asp-controller="Ewallet" asp-action="Index"><i class="fa-solid fa-wallet fs-3 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">電子錢包</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyCar" asp-controller="Car" asp-action="Index"><i class="fa-solid fa-car-side fs-3 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">車輛管理</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyParkingSlot" asp-controller="MonSlotManage" asp-action="Index"><i class="fa-solid fa-braille fs-3 me-2"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">停車位管理</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyEntryExitManagement" asp-controller="EntryExitManagement" asp-action="Index"><i class="fa-solid fa-car-tunnel fs-3 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">出入管理</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyMonthlyRental" asp-controller="MonthlyRentals" asp-action="Index"><i class="fa-solid fa-calendar-days fs-3 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">月租管理</span></a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link text-dark" asp-area="MyReservation" asp-controller="Reservation" asp-action="Index"><i class="fa-solid fa-book fs-3 me-3"></i><span class="sidebarName side-text my-2 me-2" style="font-size:20px">預定管理</span></a>
+            </li>
+        }
+            <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+            </ul>
+    <!-- Content Wrapper -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                @*  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    *@
+                    
+
+                    @*   <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <partial name="_LoginPartial" />
+                    </ul> *@
+                @* </nav> *@
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-mygoTop d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <!-- End of Topbar -->
+                <div class="container">
+                    <main role="main" class="pb-3 mt-5">
+                        @RenderBody()
+                    </main>
+                </div>
+            </div>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2024 - MyGoParking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="~/sidebar/vendor/jquery-easing/jquery.easing.min.js" asp-append-version="true"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js" asp-append-version="true"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="~/sidebar/js/sb-admin-2.min.js" asp-append-version="true"></script>
+    <!-- Page level plugins -->
+    <script src="~/sidebar/vendor/chart.js/Chart.min.js" asp-append-version="true"></script>
+    <!-- Page level custom scripts -->
+    <!--
+    <script src="~/sidebar/js/demo/chart-area-demo.js" asp-append-version="true"></script>
+    <script src="~/sidebar/js/demo/chart-pie-demo.js" asp-append-version="true"></script>
+    -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/font-awesome/js/all.min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+    
+</html>

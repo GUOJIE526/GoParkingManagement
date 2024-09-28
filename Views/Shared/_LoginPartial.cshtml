@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<meta charset="UTF-8">
+<ul class="navbar-nav d-flex flex-row my-3 me-4">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item me-3">
+        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
+    </li>
+    <li class="nav-item">
+            @* *@
+
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="button" id="logoutButton" class="nav-link btn btn-link text-light">登出</button>
+            </form>
+
+    </li>
+}
+else
+{
+    <li class="nav-item me-3">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">註冊</a>
+    </li>
+    <li class="nav-item me-3">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">登入</a>
+    </li>
+}
+</ul>
+<script src="~/js/logout.js"></script>

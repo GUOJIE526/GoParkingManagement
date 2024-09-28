@@ -1,0 +1,146 @@
+﻿@model IEnumerable<MyGoParking.Models.Reservation>
+
+
+@{
+    ViewData["Title"] = "預訂管理";
+}
+@section Styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/2.1.7/css/dataTables.material.css" rel="stylesheet" />
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Button trigger modal -->
+<button type="button" class="CreateBtn btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#ResModal">
+    <i class="fa-solid fa-folder-plus fa-beat-fade"></i> 新增
+</button>
+
+<table id="reservationTable" class="mdl-data-table table-hover text-center" style="width:100%">
+    <thead class="text-nowrap">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidUntil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepositStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOverdue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCanceled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NotificationStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRefoundDeposit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFinish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot)
+            </th>
+            <th><i class="fa-solid fa-gear"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+@*             <td>
+                @Html.DisplayFor(modelItem => item.ReservationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidUntil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepositStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOverdue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCanceled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotificationStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRefoundDeposit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFinish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.LicensePlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lot.LotName)
+            </td>
+            <td class="text-nowrap">
+                <a asp-action="Edit" asp-route-id="@item.ResId" data-id="@item.ResId" class="EditBtn btn btn-info" data-bs-toggle="modal" data-bs-target="#EditModal"><i class="fa-solid fa-pen-to-square fa-beat"></i></a> |
+                <button class="btn btn-danger" onclick="Delete(@item.ResId)"><i class="fa-solid fa-trash fa-beat"></i></button>
+                <!-- 隱藏表單，用於發送 POST 請求 -->
+                <form id="delete-form-@item.ResId" action="/MyReservation/Reservation/Delete/@item.ResId" method="post" style="display:none;">
+                    @Html.AntiForgeryToken()
+                </form>
+            </td>
+ *@        </tr>
+}
+    </tbody>
+</table>
+
+<!-- Create Modal -->
+<div class="modal fade" id="ResModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body CreateRes">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">編輯</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body EditRes">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.material.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/js/reservation.js" asp-append-version="true"></script>
+    <script>
+    </script>
+}

@@ -1,0 +1,97 @@
+﻿@model MyGoParking.Models.EntryExitManagement
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h2 class="text-bg-danger">確定要刪除嗎?</h2>
+<div class="row">
+    <h4>EntryExitManagement</h4>
+    <hr />
+    <div class="col-6">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Parktype)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Parktype)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LicensePlatePhoto)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LicensePlatePhoto)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EntryTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EntryTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LicensePlateKeyinTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LicensePlateKeyinTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Amount)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Amount)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ExitTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ExitTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PaymentStatus)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PaymentStatus)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PaymentTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PaymentTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ValidTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ValidTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CarId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CarId),車主為:@Html.DisplayFor(model => model.Car.User.Username)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LotId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LotId),@Html.DisplayFor(model => model.Lot.LotName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsFinish)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IsFinish)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-6">
+        <partial name="_ShowPicturePartial" />
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="EntryexitId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

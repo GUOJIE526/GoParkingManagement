@@ -1,0 +1,15 @@
+﻿@media screen and (max-width: 768px) {
+    .nav-link {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .sidebarName {
+        display: none;
+        color: white;
+    }
+    .nav-item{
+        padding-left: 15px;
+    }
+}

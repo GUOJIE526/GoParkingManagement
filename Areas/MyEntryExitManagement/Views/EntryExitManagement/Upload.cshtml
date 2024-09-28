@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">測試測試</div>
+            <div class="col-12 col-md-6">測試</div>
+        </div>
+    </div>
+</body>
+</html>
+
+<select id="monthFilter"></select>
+
+<iframe src="http://localhost:3000/d-solo/fdy968wowzthca/test?kiosk=tv&orgId=1&from=1726646724607&to=1726668324607&panelId=1" width="600" height="400" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/fdy9y4n3scoowb/e58588-e6b8ac-e8a9a6-e79c8b-e79c8b?orgId=1&from=1726647599246&to=1726669199246&theme=light&panelId=1" width="450" height="200" frameborder="0"></iframe>
+
+@section Scripts
+{
+<script>
+    // Function to generate month options
+    function generateMonthOptions() {
+        var select = document.getElementById('monthFilter');
+        var today = new Date();
+        var year = today.getFullYear();
+        var currentMonth = today.getMonth() + 1; // getMonth() returns 0-based month, so add 1
+
+        for (var month = 1; month <= currentMonth; month++) {
+            var monthStr = month.toString().padStart(2, '0'); // Format month to be two digits (e.g., "01")
+            var option = document.createElement('option');
+            option.value = year + '-' + monthStr;
+            option.textContent = year + '年 ' + monthStr + '月';
+            select.appendChild(option);
+        }
+    }
+
+    // Call the function to generate options when the page loads
+    window.onload = function () {
+        generateMonthOptions();
+        fetchAndUpdateChart($('#monthFilter').val()); // Initialize chart with the current month's data
+
+        // Add event listener for month selection change
+        $('#monthFilter').on('change', function () {
+            var selectedMonth = $(this).val();
+            fetchAndUpdateChart(selectedMonth);
+        });
+    };
+</script>
+}

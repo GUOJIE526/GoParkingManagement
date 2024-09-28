@@ -1,0 +1,87 @@
+body {
+    background-image: url('../images/bg.jpg');
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.container {
+    padding: 30px;
+    margin: 10rem auto;
+    background-color: rgb(20, 20, 20, 0.85);
+    /*    background: linear-gradient(90deg, rgba(66,66,66,0.5) 0%, rgba(0,0,0,0.6) 50%, rgba(66,66,66,0.5) 100%);*/
+    border-radius: 15px;
+    max-width: 500px;
+    box-shadow: 1px 1px 12px black;
+}
+
+.myAStyle {
+    color: white;
+    text-decoration: none;
+}
+
+    .myAStyle:hover {
+        color: deepskyblue;
+    }
+
+.btn {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    min-width: 200px;
+    background: #5455587e;
+    border: 2px solid deepskyblue;
+    border-radius: 4px;
+    color: deepskyblue;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    transition: 0.5s;
+    padding: 10px 20px;
+}
+
+@media (any-hover: hover) {
+    .btn span {
+        position: absolute;
+        width: 25%;
+        height: 100%;
+        background-color: deepskyblue;
+        transform: translateY(150%);
+        border-radius: 50%;
+        left: calc((var(--n) - 1) * 25%);
+        transition: 0.5s;
+        transition-delay: calc((var(--n) - 1) * 0.1s);
+        z-index: -1;
+    }
+
+    .btn:hover,
+    .btn:focus {
+        color: white;
+    }
+
+        .btn:hover span {
+            transform: translateY(0) scale(2);
+        }
+
+    .btn span:nth-child(1) {
+        --n: 1;
+    }
+
+    .btn span:nth-child(2) {
+        --n: 2;
+    }
+
+    .btn span:nth-child(3) {
+        --n: 3;
+    }
+
+    .btn span:nth-child(4) {
+        --n: 4;
+    }
+}

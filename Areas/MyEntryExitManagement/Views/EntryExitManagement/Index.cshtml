@@ -1,0 +1,111 @@
+﻿@model IEnumerable<MyGoParking.Models.EntryExitManagement>
+@* @model IEnumerable<MyGoParking.Areas.MyEntryExitManagement.ViewModel.EntryExitManagementViewModel>*@
+ 
+@section Styles
+{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/2.1.7/css/dataTables.material.css" rel="stylesheet" />
+    <style>
+        .container{
+            margin:0px auto;
+            overflow:auto;
+            min-width:100%;
+        }
+        th{
+            white-space: nowrap;
+        }
+
+        .EditBtn{
+            display: inline-block;
+            width: 100%; /* 確保按鈕佔滿整個欄位 */
+        }
+        
+    </style>
+    <link href="~/lib/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>出入管理</h1>
+<p>
+    <button class="btn btn-success preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="" data-action="CreatePartial" data-title="新增資料">新增</button>
+</p>
+<!-- Modal 用Bootstrap的互動視窗展示圖片-->
+<div class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="modalid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<table id="myDataTableId" class="mdl-data-table text-center" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Parktype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlatePhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlateKeyinTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExitTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LotId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFinish)
+            </th>
+            <th>
+                修改
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data will be loaded here via AJAX -->
+    </tbody>
+</table>
+
+
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.material.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/lib/font-awesome/js/fontawesome.min.js"></script>
+    <script src="~/js/picture.js"></script>
+    <script src="~/js/entryexit.js"></script>
+}

@@ -1,0 +1,33 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+<link href="~/css/mycustomer.min.css" rel="stylesheet" />
+<style>
+    a{
+        color:#887998 !important;
+    }
+</style>
+<h1>使用者管理</h1>
+<div>
+    <h3>變更使用者設定</h3>
+    <hr />
+    <div class="row"> 
+        <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

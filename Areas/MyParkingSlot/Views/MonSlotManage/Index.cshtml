@@ -1,0 +1,205 @@
+﻿@model MyGoParking.Areas.MyParkingSlot.ViewModels.ParkingSlotManageViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+    int RowSpaceCount = Model.TotalLots == 5 ? Model.TotalLots : Model.TotalLots / 2;  //如果只有五個車位，一行五個車位，如果不是五個車位(超過)，一行/2的車位
+}
+
+@section Styles {
+    <style>
+        .badge-lightblue {
+            background-color: #80C4E9; /* 淺藍色背景 */
+            color: white;
+        }
+        /* 停車場容器 */
+        .rentalStatus {
+            /*             width: 450px; */
+            display: flex;
+            flex-direction: column; /* 使用垂直方向排列 */
+            background-color: lightgray;
+            border-radius: 15px;
+            padding: 10px;
+        }
+
+        /* 停車位容器（上排、下排） */
+        .parkingRow {
+            display: flex; /* 水平排列停車格 */
+            justify-content: space-evenly; /* 均等分配停車格 */
+        }
+
+        /* 停車位格子 */
+        .parkingSlot {
+            width: 50px;
+            height: 100px;
+            margin: 5px;
+            color: white;
+            font-weight: bold;
+            display: flex; /*為了讓文字置中*/
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        /* 馬路 */
+        .parkingMark {
+            height: 50px;
+            margin: 10px 0;
+            background-color: gray;
+            text-align: center;
+            line-height: 50px;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+}
+<div class="d-flex">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="selectedLot" data-bs-toggle="dropdown" aria-expanded="false">
+            <span id="selectedParkingLotName">請選擇停車場</span>
+        </button>
+        <ul class="dropdown-menu parkingLotList" aria-labelledby="dropdownMenuButton1">
+            @foreach (var parkingLot in Model.ParkingLots)
+            {
+                <li><a class="dropdown-item parkingLot" href="#" data-id="@parkingLot.LotId" data-value="@parkingLot.LotName">@parkingLot.LotName</a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+
+
+<div id="statusContainer" class="mt-3">
+    <!-- 初始內容或占位符 -->
+</div>
+
+
+<!-- Create Modal -->
+<div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="yeee">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">編輯</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="neee">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>        
+        
+        $(document).ready(function () {
+            // 假設預設索引為 1，設定要顯示的預設值
+            var defaultIndex = 0;
+
+            // 獲取選中的項目
+            var selectedItem = $(".parkingLot").eq(defaultIndex);
+            $("#selectedParkingLotName").text(selectedItem.data("value"));
+            console.log("Number of dropdown items:", $(".parkingLot").length);
+            $(".parkingLot").each(function () {
+                console.log("Item data-id:", $(this).data("id"));
+                console.log("Item data-value:", $(this).data("value"));
+            });
+            
+            
+            // 獲取預設停車場ID並載入狀態
+            var defaultLotID = selectedItem.data("id");
+            console.log("Default Lot ID:", defaultLotID); // 查看預設停車場 ID 是否正確
+
+
+            // 自動加載預設停車場的狀態
+            $.ajax({
+                type: "GET",
+                url: "MonSlotManage/LoadParkingLotStatus/" + defaultLotID, // 確保路徑正確
+                success: function (result) {
+                    $("#statusContainer").html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+
+            $(".parkingLot").on("click", function () {
+                var selectedLot = $(this).data("value");
+                var selectedLotID = $(this).data("id");
+                console.log("Selected Lot:", selectedLot, "ID:", selectedLotID); // 添加此行來檢查事件是否觸發
+                $("#selectedParkingLotName").text(selectedLot);  //改變下拉式選單顯示的名稱                               
+
+                $.ajax({
+                    type: "GET",
+                    url: "MonSlotManage/LoadParkingLotStatus/" + selectedLotID ,
+                    success: function (result) {
+                        $("#statusContainer").html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error: ", status, error);
+                    }
+                });
+                
+            });
+        });
+    </script>
+
+    @* sweetAlert *@
+    <script>//有bug
+        // //動態加載Create內容
+        // $('#CreateBtn').on('click', function () {
+        //     $('#yeee').load('/MyParkingSlot/MonSlotManage/Create #CreateForm', function () {
+        //         console.log("Form loaded"); // 確認表單加載
+        //         $(document).on('submit', '#CreateForm', function (e) {
+        //             e.preventDefault(); // 防止默認提交行為
+        //             $.ajax({
+        //                 url: $(this).attr('action'), // 表單的 action URL
+        //                 type: 'POST',
+        //                 data: $(this).serialize(), // 將表單數據序列化
+        //                 dataType: 'Json',
+        //                 success: function (response) {
+        //                     if (response.success) {
+        //                         // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
+        //                         $('#myModal').modal('hide');
+        //                         location.reload(); // 刷新特定部分
+        //                     } else {
+        //                         // 如果失敗，動態替換SweetAlert，顯示錯誤
+        //                         Swal.fire({
+        //                             icon: "error",
+        //                             title: "Oops...",
+        //                             text: "請填入必填欄位!",
+        //                         });
+        //                         //$('#myModal .modal-body').html(response);
+        //                     }
+        //                 }
+        //             });
+        //         });
+        //         $('#myModal').modal('show');
+        //     });
+        // });
+
+        // //動態加載Edit內容
+        
+        
+    </script>
+
+    
+}
+

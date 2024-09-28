@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MyGoParking.Models.Customer>
+
+@{
+    ViewData["Title"] = "用戶管理";
+}
+
+<link href="~/css/mycustomer.css" rel="stylesheet" />
+<h1>@ViewData["Title"]</h1>
+
+<style>
+
+</style>
+<p>
+    <a asp-action="Create" class="btnS" data-bs-toggle="modal" data-bs-target="#customerCreateModal" id="customerCreateBtn">
+        <i class="fa-solid fa-user-plus"></i>
+        新增
+        <span></span>
+    </a>
+</p>
+<table class="table table-hover table-striped" id="CustTable">
+    <thead class="table-color">
+        <tr>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.BlackCount)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IsBlack)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.BlackCount)
+                </td>
+                <td class="text-center">
+                    <label class="switch">
+                        <input type="checkbox">
+                        @Html.DisplayFor(modelItem => item.IsBlack)
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+                <td class="text-center">
+                    <a asp-action="Edit" asp-route-id="@item.UserId" data-bs-toggle="modal" data-bs-target="#customerEditModal" class="customerEditBtn" data-id="@item.UserId"><i class="fa-solid fa-pen-to-square fa-xl testa"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- CreateModal -->
+<div class="modal fade" id="customerCreateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增用戶</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="Createbody">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+<!-- EditModal -->
+<div class="modal fade" id="customerEditModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">編輯用戶</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="Editbody">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/customer.min.js"></script>
+}

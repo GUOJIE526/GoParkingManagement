@@ -1,0 +1,249 @@
+﻿@model IEnumerable<MyGoParking.Models.ParkingLot>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+
+    @* <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+       @*  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+            </a>
+        </div> *@
+
+        <!-- Content Row -->
+        <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-mygo1 shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="col-auto my-1 ms-1">
+                            <i class="fa-solid fa-briefcase text-midi"></i>
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                            
+                            <div class="col mr-2">
+                                <div class="text-sm font-weight-bold text-midi text-uppercase mb-1">
+                                    營收(月租)
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800 Money">@ViewBag.monthlySum</div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card bg-mygo4 shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="col-auto">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-sm font-weight-bold text-midi text-uppercase mb-1">
+                                    營收(停車)
+                                </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Money">@ViewBag.EntryExitSum</div>
+                            </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card  shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="col-auto">
+                            <i class="fa-solid fa-arrow-up-right-dots"></i>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-midi text-uppercase mb-1">
+                                    預定達成率
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-3">
+                                        <div class="h5 ms-1 font-weight-bold text-gray-800"><span class="CompeleteRate">@ViewBag.CompeleteRate</span><span>%</span></div>
+                                    </div>
+                                    <div class="col-9 align-items-top">
+                                        <div class="progress progress-sm mr-4">
+                                            <div class="progress-bar bg-info"></div>
+                                                @*role="progressbar"
+                                                style="width: @ViewBag.CompeleteRate%" aria-valuenow="@ViewBag.CompeleteRate" aria-valuemin="0"
+                                                aria-valuemax="100"*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card  shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="col-auto">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-midi text-uppercase mb-1">
+                                    Pending Requests
+                                </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">@ViewBag.MonthlyApply</div>
+                            </div>
+                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+
+        <div class="row">
+
+            <!-- Area Chart -->
+            @* <div class="col-xl-8 col-lg-7"> *@
+                <div class="col-12">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-midi">停車場總攬</h6>
+                    </div>
+                    <!-- Card Body -->
+                   
+                    <div class="container">
+                        <div class="row">
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">@Html.DisplayNameFor(model => model.LotName)</th>
+                                            <th scope="col">@Html.DisplayNameFor(model => model.Qty)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model){
+                                        <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.LotName)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Qty)</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            </div>
+            
+        <!-- Content Row -->
+        <div class="row">
+
+            <!-- Content Column -->
+            <div class="col-lg-6 mb-4">
+
+                <!-- Project Card Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-midi">月租率</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="progress-bars">
+                            <!-- 進度條會在這裡動態生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- Pie Chart -->
+                @* <div class="col-xl-4 col-lg-5"> *@
+                    <div class="col-lg-4">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-midi">營業額</h6>
+
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="chart-pie pt-4 pb-2">
+                                <canvas id="RevenuePieChart"></canvas>
+                            </div>
+                            <div class="mt-4 text-center small">
+                                <span class="mr-2">
+                                    <i class="fa-solid fa-circle" style="color: #ff6384;"></i> 停車收益
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fa-solid fa-circle" style="color: #36a2eb;"></i> 預定違約金
+                                </span>
+                                <span class="mr-2">
+                                    <i class="fa-solid fa-circle" style="color: #ffcd56;"></i> 月租收益
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--新增的營業額圖表 上面已經有圓餅圖了 這邊是折線圖-->
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="d-flex justify-content-between">
+            <select id="monthFilterES" class="form-select w-50"></select>
+            <select id="typeFilterES" class="form-select w-50">
+                <option value="EntryExit">停車</option>
+                <option value="MonthlyRental">月租</option>
+            </select>
+        </div>
+        <canvas id="lineChartES" width="300" height="200"></canvas>
+
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="d-flex justify-content-between">
+            <select id="monthFilterMS" class="form-select w-50"></select>
+            <select id="typeFilterMS" class="form-select w-50">
+                <option value="MonthlyRental">月租</option>
+                <option value="EntryExit">停車</option>
+            </select>
+        </div>
+        <canvas id="lineChartMS" width="300" height="200"></canvas>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/numbercounter/res/countme/countme.min.js"></script>
+    <script type="text/javascript">
+        var ResCompelete = parseInt("@ViewBag.CompeleteRate");
+        var revenueUrl = '@Url.Action("GetAllRevenue", "Revenue")';
+        var revenueEntryExitUrl = '@Url.Action("GetEntryExitRevenue", "Revenue")';
+        var revenueMonthlyUrl = '@Url.Action("GetMonthlyRentalRevenue", "Revenue")';
+        var revenueGetEntryExitMonthlyUrl = '@Url.Action("GetEntryExitMonthlyData", "Revenue")';
+        var revenueGetMonthlyRentalMonthlyUrl = '@Url.Action("GetMonthlyRentalMonthlyData", "Revenue")';
+    </script>
+    <script src="~/js/dashboard.js"></script>
+    <script src="~/js/revenue.js"></script>
+}

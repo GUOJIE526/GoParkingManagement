@@ -1,0 +1,40 @@
+﻿@page
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "重新發送驗證信";
+}
+@{
+    Layout = null;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/css/myloginstyle.min.css" rel="stylesheet" />
+
+    <div class="container">
+        <div class="row">
+        <form method="post">
+            <h1 class="text-center text-white">@ViewData["Title"]</h1>
+            <hr />
+            <h3 class="text-white">請輸入信箱</h3>
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-lg mb-3">
+                    重新發送<span></span><span></span><span></span><span></span>
+                </button>
+                <a class="w-100 btn btn-lg" asp-area="Identity" asp-page="/Account/Login">
+                    返回登入<span></span><span></span><span></span><span></span>
+                    </a>
+            </div>      
+        </form>
+        </div>
+    </div>
+    
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

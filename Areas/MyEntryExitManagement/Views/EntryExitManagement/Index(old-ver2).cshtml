@@ -1,0 +1,330 @@
+﻿@model IEnumerable<MyGoParking.Models.EntryExitManagement>
+@* @model IEnumerable<MyGoParking.Areas.MyEntryExitManagement.ViewModel.EntryExitManagementViewModel>*@
+
+@section Styles
+{
+    <link href="https://cdn.datatables.net/v/bs5/dt-2.1.6/b-3.1.2/r-3.0.3/sc-2.4.3/sb-1.8.0/sp-2.3.2/datatables.min.css" rel="stylesheet">
+    <style>
+        .container{
+            margin:0px auto;
+            overflow:auto;
+            min-width:100%;
+        }
+        th{
+            white-space: nowrap;
+        }
+
+        .dataTables_wrapper {
+            width: 100%; /* 使容器寬度適應其父容器 */
+            overflow-x: auto; /* 添加水平滾動條以處理超出內容 */
+            margin: 0 auto; /* 將容器置中 */
+        }
+
+    </style>
+    <link href="~/lib/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>出入管理</h1>
+<p>
+    <a asp-action="Create">創新資料(預計刪除,由車牌辨識控制)</a>
+</p>
+<!--
+<table class="table col-12" id="table">
+    <thead>
+        <tr>
+            <th>
+@Html.DisplayNameFor(model => model.Parktype)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.LicensePlatePhoto)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.CarId)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.EntryTime)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.LicensePlateKeyinTime)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.ExitTime)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.PaymentStatus)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.PaymentTime)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.ValidTime)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.LotId)
+            </th>
+            <th>
+@Html.DisplayNameFor(model => model.IsFinish)
+            </th>
+            <th>
+                修改功能
+            </th>
+            <th>
+                預覽車牌
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+                <tr class="col-12">
+                    <td>
+            @Html.DisplayFor(modelItem => item.Parktype)
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-success preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="@item.EntryexitId" data-action="ShowPicturePartial" data-title="預覽圖片">預覽</button>
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.Car.LicensePlate)<br>車主:@Html.DisplayFor(modelItem => item.Car.User.Username)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.EntryTime)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.LicensePlateKeyinTime)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.ExitTime)
+                    </td>
+                    <td data-sort="@item.PaymentStatus ? 1 : 0">
+            @Html.DisplayFor(modelItem => item.PaymentStatus)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.PaymentTime)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.ValidTime)
+                    </td>
+                    <td>
+            @Html.DisplayFor(modelItem => item.Lot.LotName)
+                    </td>
+                    <td data-sort="@item.IsFinish ? 1 : 0">
+            @Html.DisplayFor(modelItem => item.IsFinish)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.EntryexitId"><i class="fa-solid fa-pen-to-square" title="修改"></i></a>
+                        <a asp-action="Details" asp-route-id="@item.EntryexitId"><i class="fa-solid fa-circle-info" title="查看詳細"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.EntryexitId"><i class="fa-solid fa-trash" style="color: #f40606;" title="刪除"></i></a>
+                    </td>
+                    <td>
+                        <button class="btn btn-success preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="@item.EntryexitId" data-action="DetailsPartial" data-title="詳細資訊">詳細</button>
+                        <button class="btn btn-success preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="" data-action="CreatePartial" data-title="新增資料">新增</button>
+                        <button class="btn btn-success preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="@item.EntryexitId" data-action="EditPartial" data-title="編輯資料">編輯</button>
+                    </td>
+                </tr>
+}
+    </tbody>
+</table>
+-->
+<!-- Modal 用Bootstrap的互動視窗展示圖片-->
+<div class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="modalid">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<table id="yourDataTableId" class="display">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Parktype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlatePhoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlateKeyinTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExitTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LotId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFinish)
+            </th>
+            <th>
+                修改
+            </th>
+            <th>
+                刪除
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data will be loaded here via AJAX -->
+    </tbody>
+</table>
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-2.1.6/b-3.1.2/r-3.0.3/sc-2.4.3/sb-1.8.0/sp-2.3.2/datatables.min.js"></script>
+    <script src="~/lib/font-awesome/js/fontawesome.min.js"></script>
+    <script src="~/js/picture.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.fn.dataTable.ext.order['boolean-asc'] = function (settings, data, dataIndex) {
+                return data.map(function (value) {
+                    return value === 'true' ? 1 : 0;
+                });
+            };
+
+            $.fn.dataTable.ext.order['boolean-desc'] = function (settings, data, dataIndex) {
+                return data.map(function (value) {
+                    return value === 'true' ? 0 : 1;
+                });
+            };
+
+
+            $('#table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.6/i18n/zh-HANT.json',
+                },
+                order: [[7, 'asc'], [11, 'asc']], // 初始排序設置，根據你的需求進行調整
+                columnDefs: [
+                    {
+                        targets: 8, // 第一個布林值列的索引
+                        type: 'boolean-asc' // 或 'boolean-desc' 根據需要選擇
+                    },
+                    {
+                        targets: 12, // 第二個布林值列的索引
+                        type: 'boolean-asc' // 或 'boolean-desc' 根據需要選擇
+                    }
+                ]
+            });
+
+
+            $('#mymodal').on('show.bs.modal', function (event) {
+                //console.log("我有被按到");
+                var button = $(event.relatedTarget); // 觸發modal的按鈕
+                var id = button.data('id'); // 從按鈕中獲取資料ID
+                var action = button.data('action'); // 從按鈕中獲取動作 (details/edit/create等)
+                var title = button.data('title')
+                if (action == "ShowPicturePartial") {
+                    $('#modalid').attr('class', 'modal-dialog modal-lg');
+                }
+                else {
+                    $('#modalid').attr('class', 'modal-dialog modal-xl');// 改為大尺寸
+                }
+                $('#exampleModalLabel').text(title)
+                var modal = $(this);
+                // 根據不同的動作，載入對應的 Partial View
+                var url = 'EntryExitManagement/' + action + '/' + id;
+                modal.find('.modal-body').load(url); // 動態加載Partial View
+            });
+
+
+            $(document).on("change", "#Picture", function () {
+                previewImage(this);
+            });
+
+
+            $(document).ready(function () {
+                $('#yourDataTableId').DataTable({
+                    ajax: {
+                        url: 'EntryExitManagement/GetData',
+                        type: 'GET',
+                        dataSrc: '',
+                        datatype: 'json',
+                    },
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/2.1.6/i18n/zh-HANT.json',
+                    },
+                    columns: [
+                        { data: 'parktype' },
+                        {
+                            data: 'licensePlatePhoto',
+                            render: function (data, type, row) {
+                                return '<div class="text-center">' +
+                                    '<button class="btn btn-success preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="' + row.entryexitId + '" data-action="ShowPicturePartial" data-title="預覽圖片">預覽</button>' +
+                                    '</div>';
+                            }
+                        },
+                        {
+                            data: null, // 因為我們將要自定義內容，所以設為 null
+                            render: function (data, type, row) {
+                                return row.carId + '<br>車主: ' + row.userName; // 同時顯示 carId 和 userName
+                            }
+                        },
+                        { data: 'entryTime' },
+                        { data: 'licensePlateKeyinTime' },
+                        { data: 'amount' },
+                        { data: 'exitTime' },
+                        { data: 'paymentStatus' },
+                        { data: 'paymentTime' },
+                        { data: 'validTime' },
+                        { data: 'lotName' }, // 修改 LotId 為 lotName
+                        { data: 'isFinish' },
+                        {
+                            data: 'entryexitId',
+                            render: function (data) {
+                                return '<button class="btn btn-warning preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="' + data + '" data-action="EditPartial" data-title="編輯資料">編輯</button>';
+                            }
+                        },
+                        {
+                            data: 'entryexitId',
+                            render: function (data) {
+                                return '<button class="btn btn-info preview" data-bs-toggle="modal" data-bs-target="#mymodal" data-id="' + data + '" data-action="DetailsPartial" data-title="詳細資料">詳細</button>';
+                            }
+                        }
+                    ]
+                });
+            });
+
+
+
+
+        });
+
+    </script>
+}

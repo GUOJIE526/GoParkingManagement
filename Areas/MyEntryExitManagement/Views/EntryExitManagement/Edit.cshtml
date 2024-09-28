@@ -1,0 +1,105 @@
+﻿@model MyGoParking.Models.EntryExitManagement
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>EntryExitManagement</h4>
+<hr />
+<div class="container">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="EntryexitId" />
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="form-group">
+                    <label asp-for="LotId" class="control-label"></label>
+                    <select asp-for="LotId" class="form-control" asp-items="ViewBag.LotId"></select>
+                    <span asp-validation-for="LotId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarId" class="control-label"></label>
+                    <select asp-for="CarId" class="form-control" asp-items="ViewBag.CarId"></select>
+                    <span asp-validation-for="CarId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Parktype" class="control-label"></label>
+                    <input asp-for="Parktype" class="form-control" />
+                    <span asp-validation-for="Parktype" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LicensePlatePhoto" class="control-label"></label>
+                    <input asp-for="LicensePlatePhoto" class="form-control" />
+                    <span asp-validation-for="LicensePlatePhoto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EntryTime" class="control-label"></label>
+                    <input asp-for="EntryTime" class="form-control" />
+                    <span asp-validation-for="EntryTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LicensePlateKeyinTime" class="control-label"></label>
+                    <input asp-for="LicensePlateKeyinTime" class="form-control" />
+                    <span asp-validation-for="LicensePlateKeyinTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExitTime" class="control-label"></label>
+                    <input asp-for="ExitTime" class="form-control" />
+                    <span asp-validation-for="ExitTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentTime" class="control-label"></label>
+                    <input asp-for="PaymentTime" class="form-control" />
+                    <span asp-validation-for="PaymentTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValidTime" class="control-label"></label>
+                    <input asp-for="ValidTime" class="form-control" />
+                    <span asp-validation-for="ValidTime" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentStatus" class="control-label"></label>
+                    <select asp-for="PaymentStatus" class="form-control" asp-items="ViewBag.IsPayment"></select>
+                    <span asp-validation-for="PaymentStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsFinish" class="control-label"></label>
+                    <select asp-for="IsFinish" class="form-control" asp-items="ViewBag.IsFinished"></select>
+                    <span asp-validation-for="IsFinish" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="d-flex align-content-center justify-content-center my-3">
+                    <partial name="_ShowPicturePartial" id="carimg" />
+                </div>
+                <input id="Picture" name="Picture" type="file" accept="image/*" class="form-control" style="width:70%;margin:auto"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary"/>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function(){
+            $("#IsFinish").on("change", function () { 
+                
+            })
+        })
+    </script>
+    <script src="~/js/picture.js"></script>
+}

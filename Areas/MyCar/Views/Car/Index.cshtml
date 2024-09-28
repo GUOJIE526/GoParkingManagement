@@ -1,0 +1,89 @@
+﻿@model IEnumerable<MyGoParking.Models.Car>
+
+@{
+    ViewData["Title"] = "車輛管理";
+}
+
+@section Styles{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/2.1.7/css/dataTables.material.css" rel="stylesheet" />
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-success CreateBtn" data-bs-toggle="modal" data-bs-target="#CreateModal"><i class="fa-solid fa-folder-plus fa-beat-fade"></i> 新增</a>
+</p>
+<table id="CarTable" class="mdl-data-table text-center table-hover" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th><i class="fa-solid fa-gear"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+@*         @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LicensePlate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CarId" class="EditBtn btn btn-info" data-id="@item.CarId" data-bs-toggle="modal" data-bs-target="#EditModal"><i class="fa-solid fa-pen-to-square fa-beat"></i></a> |
+                    <a class="btn btn-danger" onclick="Delete(@item.CarId)"><i class="fa-solid fa-trash fa-beat"></i></a>
+                    <!-- 隱藏表單，用於發送 POST 請求 -->
+                    <form id="car-form-@item.CarId" action="/MyCar/Car/Delete/@item.CarId" method="post" style="display:none;">
+                        @Html.AntiForgeryToken()
+                    </form>
+                </td>
+            </tr>
+        }
+ *@    </tbody>
+</table>
+
+<!-- Create Modal -->
+<div class="modal fade" id="CreateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body CreateCar">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">編輯</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body EditCar">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.7/js/dataTables.material.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.3.2/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/js/car.js"></script>
+}

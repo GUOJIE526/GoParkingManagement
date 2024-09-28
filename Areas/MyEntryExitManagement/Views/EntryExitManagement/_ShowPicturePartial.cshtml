@@ -1,0 +1,18 @@
+﻿@model EntryExitManagement
+@inject MyGoParkingContext context
+
+@{
+    EntryExitManagement? entryExitManagement = await context.EntryExitManagement.FindAsync(Model.EntryexitId);
+    if (entryExitManagement != null && entryExitManagement.LicensePlatePhoto != null)
+    {
+        <div class="d-flex align-content-center justify-content-center align-items-center">
+            <img style="width:80%;height:60%;" src="@Url.Action("GetPicture", "EntryExitManagement", new{id=Model.EntryexitId})?t=@DateTime.Now.Ticks" />
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-content-center justify-content-center">
+        <img src="@Url.Content("~/images/not_found.png")" title="尚無圖片" style="width:640px;height:480px;" />
+        </div>
+    }
+}

@@ -1,0 +1,128 @@
+﻿@model IEnumerable<MyGoParking.Models.Reservation>
+
+@{
+    ViewData["Title"] = "預訂管理";
+}
+
+<h1>預訂管理</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success"><i class="fa-solid fa-folder-plus fa-beat-fade"></i> 新增</a>
+</p>
+<table id="reservationTable" class="table table-hover align-middle text-nowrap table-bordered border-dark" style="width:100%">
+    <thead class="table-danger">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidUntil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepositStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOverdue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCanceled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NotificationStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRefoundDeposit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFinish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lot)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReservationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidUntil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepositStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOverdue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCanceled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotificationStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRefoundDeposit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFinish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.LicensePlate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lot.LotName)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.ResId" class="btn btn-info"><i class="fa-solid fa-pen-to-square fa-beat"></i></a> |
+                    <button class="btn btn-danger" onclick="Delete(@item.ResId)"><i class="fa-solid fa-trash fa-beat"></i></button>
+                    <!-- 隱藏表單，用於發送 POST 請求 -->
+                    <form id="delete-form-@item.ResId" action="/MyReservation/Reservation/Delete/@item.ResId" method="post" style="display:none;">
+                        @Html.AntiForgeryToken()
+                    </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+        function Delete(id) {
+            Swal.fire({
+                title: "你確定要刪除嗎?",
+                text: "刪除後無法復原!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "刪除!",
+                        text: "資料已刪除",
+                        icon: "success"
+                    }).then(confirm => {
+                        if (confirm.isConfirmed) {
+                            document.getElementById('delete-form-' + id).submit();
+                        }
+                    })
+
+                }
+            });
+        }
+    </script>
+}

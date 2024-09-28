@@ -1,0 +1,77 @@
+﻿@model MyGoParking.Models.ParkingLot
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ParkingLot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" id="CreateForm" class="col-md-12" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LotName" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="LotName" class="form-control" />
+                <span asp-validation-for="LotName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LotAddress" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="LotAddress" class="form-control" />
+                <span asp-validation-for="LotAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Qty" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="Qty" class="form-control" />
+                <span asp-validation-for="Qty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Etcqty" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="Etcqty" class="form-control" />
+                <span asp-validation-for="Etcqty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Monqty" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="Monqty" class="form-control" />
+                <span asp-validation-for="Monqty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsResStatus" class="control-label"></label>          
+                <select asp-for="IsResStatus" class="form-control" asp-items="ViewBag.IsRes"></select>
+                <span asp-validation-for="IsResStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsMonStatus" class="control-label"></label>
+                <select asp-for="IsMonStatus" class="form-control" asp-items="ViewBag.IsMon"></select>
+                <span asp-validation-for="IsMonStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Contract" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input type="file" id="ContractFile" name="ContractFile" class="form-cintrol" />
+                @* <input asp-for="Contract" class="form-control" type="file" accept="image/*"/> *@
+                <span asp-validation-for="Contract" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
