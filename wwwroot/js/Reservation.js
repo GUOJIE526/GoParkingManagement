@@ -9,7 +9,7 @@
     fixedHeader: {
         header: true
     },
-    scrollY: 500,
+    scrollY: 550,
     language: {
         url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/zh-HANT.json',
     },
@@ -26,7 +26,7 @@
         { data: 'carId' },
         { data: 'lotId' },
         {
-            data: 'resId',  
+            data: 'resId',
             render: function (data) {
                 return `
                     <div class = "text-nowrap">
@@ -95,7 +95,7 @@ $('.CreateBtn').on('click', async function () {
 });
 
 //動態加載Edit內容
-$(document).on('click', '.EditBtn',  async function () {
+$(document).on('click', '.EditBtn', async function () {
     var id = $(this).data('id'); // 獲取該筆資料的 ID
     let response = await fetch(`/MyReservation/Reservation/EditPartial/${id}`);
     let partialView = await response.text();  // 讀取返回的 HTML 內容

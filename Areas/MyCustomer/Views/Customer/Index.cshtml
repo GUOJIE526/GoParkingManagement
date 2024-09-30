@@ -37,41 +37,11 @@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.IsBlack)
             </th>
-            <th></th>
+            <th><i class="fa-solid fa-gear"></i></th>
         </tr>
     </thead>
     <tbody>
-@*         @foreach (var item in Model)
-        {
-            <tr>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.BlackCount)
-                </td>
-                <td class="text-center">
-                    <label class="switch">
-                        <input type="checkbox">
-                        @Html.DisplayFor(modelItem => item.IsBlack)
-                        <span class="slider round"></span>
-                    </label>
-                </td>
-                <td class="text-center">
-                    <a asp-action="Edit" asp-route-id="@item.UserId" data-bs-toggle="modal" data-bs-target="#customerEditModal" class="customerEditBtn" data-id="@item.UserId"><i class="fa-solid fa-pen-to-square fa-xl testa"></i></a>
-                </td>
-            </tr>
-        }
- *@    </tbody>
+    </tbody>
 </table>
 <!-- CreateModal -->
 <div class="modal fade" id="CreateCust" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
