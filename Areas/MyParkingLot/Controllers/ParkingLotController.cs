@@ -30,6 +30,23 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
             return View(_context.ParkingLot);
         }
 
+        public IActionResult IndexJson()
+        {
+            var ParkLot = _context.ParkingLot.Select(p => new
+            {
+                lotId = p.LotId,
+                lotName = p.LotName,
+                lotAddress = p.LotAddress,
+                qty = p.Qty,
+                etcqty = p.Etcqty,
+                monqty = p.Monqty,
+                isResStatus = p.IsResStatus ? "可預訂" : "不可預訂",
+                isMonStatus = p.IsMonStatus ? "可月租" : "不可月租",
+                contract = p.Contract,
+            });
+            return Json(ParkLot);
+        }
+
         private async Task SaveUploadImage(ParkingLot parkingLot, IFormFile file)
         {
             if (file != null && file.Length > 0)

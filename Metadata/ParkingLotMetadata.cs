@@ -15,13 +15,13 @@ namespace MyGoParking.Metadata
         [Display(Name = "停車場地址")]
         public string? LotAddress { get; set; }
         [Required(ErrorMessage = "請選擇")]
-        [Display(Name = "停車場數量")]
+        [Display(Name = "車位數量")]
         public int? Qty { get; set; }
         [Required(ErrorMessage = "請選擇")]
-        [Display(Name = "停車場電動車位數量")]
+        [Display(Name = "電動車位數量")]
         public int? Etcqty { get; set; }
         [Required(ErrorMessage = "請選擇")]
-        [Display(Name = "停車場月租車位數量")]
+        [Display(Name = "月租車位數量")]
         public int? Monqty { get; set; }
         [Required(ErrorMessage = "請選擇")]
         [Display(Name = "可否預約")]

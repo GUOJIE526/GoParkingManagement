@@ -56,51 +56,6 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-@*             <td>
-                @Html.DisplayFor(modelItem => item.ReservationTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValidUntil)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepositStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsOverdue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCanceled)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NotificationStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRefoundDeposit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsFinish)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Car.LicensePlate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lot.LotName)
-            </td>
-            <td class="text-nowrap">
-                <a asp-action="Edit" asp-route-id="@item.ResId" data-id="@item.ResId" class="EditBtn btn btn-info" data-bs-toggle="modal" data-bs-target="#EditModal"><i class="fa-solid fa-pen-to-square fa-beat"></i></a> |
-                <button class="btn btn-danger" onclick="Delete(@item.ResId)"><i class="fa-solid fa-trash fa-beat"></i></button>
-                <!-- 隱藏表單，用於發送 POST 請求 -->
-                <form id="delete-form-@item.ResId" action="/MyReservation/Reservation/Delete/@item.ResId" method="post" style="display:none;">
-                    @Html.AntiForgeryToken()
-                </form>
-            </td>
- *@        </tr>
-}
     </tbody>
 </table>
 
