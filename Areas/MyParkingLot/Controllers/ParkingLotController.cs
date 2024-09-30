@@ -90,6 +90,23 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
         }
 
         // GET: MyParkingLot/ParkingLot/Create
+
+        public IActionResult CreatePartial()
+        {
+            ViewData["IsRes"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "可預約", Value = "True"},
+                new SelectListItem { Text = "不可預約", Value = "False"}
+            }, "Value", "Text");
+            ViewData["IsMon"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "可月租", Value = "True"},
+                new SelectListItem { Text = "不可月租", Value = "False"}
+            }, "Value", "Text");
+
+            return PartialView("_CreatePartial");
+        }
+
         public IActionResult Create()
         {
             ViewData["IsRes"] = new SelectList(new List<SelectListItem>
@@ -170,6 +187,32 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
             {
                 return Json(new { success = false });
             }
+        }
+
+        public async Task<IActionResult> EditPartial(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var parkingLot = await _context.ParkingLot.FindAsync(id);
+            if (parkingLot == null)
+            {
+                return NotFound();
+            }
+            ViewData["IsRes"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "可預約", Value = "True"},
+                new SelectListItem { Text = "不可預約", Value = "False"}
+            }, "Value", "Text");
+            ViewData["IsMon"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Text = "可月租", Value = "True"},
+                new SelectListItem { Text = "不可月租", Value = "False"}
+            }, "Value", "Text");
+
+            return PartialView("_EditPartial", parkingLot);
         }
 
         // GET: MyParkingLot/ParkingLot/Edit/5

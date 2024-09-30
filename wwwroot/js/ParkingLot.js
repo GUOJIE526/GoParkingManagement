@@ -40,77 +40,89 @@ $('#ParkLotTable').dataTable({
 
 
 //動態加載Create內容
-$('#CreateBtn').on('click', function () {
-    $('.ParkCreate').load('/MyParkingLot/ParkingLot/Create #CreateForm', function () {
-        function submiEvent() {
-            $(document).one('submit', '#CreateForm', function (e) {
-                e.preventDefault(); // 防止默認提交行為
-                var formData = new FormData(this);
-                $.ajax({
-                    url: $(this).attr('action'), // 表單的 action URL
-                    type: 'POST',
-                    data: formData, // 將表單數據序列化
-                    contentType: false,
-                    processData: false,
-                    dataType: 'Json',
-                    success: function (response) {
-                        console.log(response);
-                        if (response.success) {
-                            // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
-                            console.log(response);
-                            $('#CreateModal').modal('hide');
-                            location.reload(); // 刷新特定部分
-                        } else {
-                            // 如果失敗，動態替換SweetAlert，顯示錯誤
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "請填入必填欄位!",
-                            });
-                            submiEvent();
-                        }
-                    }
+async function CreatePopup() {
+    let response = await fetch('/MyParkingLot/ParkingLot/CreatePartial');
+    let partialview = await response.text();
+    $('.ParkCreate').html(partialview);
+    $(document).off('submit', '#CreateForm').on('submit', '#CreateForm', async function (e) {
+        e.preventDefault();
+        let form = new FormData(this);
+        let fetchresponse = await fetch($(this).attr('action'), {
+            method: 'POST',
+            body: form
+        });
+        if (fetchresponse.ok) {
+            let result = await fetchresponse.json();
+            if (result.success) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "新增項目成功!",
+                    showConfirmButton: false,
+                    timer: 1500
                 });
+                $('#CreateModal').modal('hide');
+                $('#ParkLotTable').DataTable().ajax.reload(null, false);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: result.errors ? result.errors.join(", ") : result.message,
+                });
+            }
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "請求發生錯誤，請稍後再試",
             });
         }
-        submiEvent();
-        $('#CreateModal').modal('show');
     });
-});
+    $('#CreateModal').modal('show');
+}
 //動態加載Edit內容
-$(document).on('click', '#EditBtn', function () {
-    var id = $(this).data('id'); // 獲取該筆資料的 ID
-    $('.modal-Editbody').load(`/MyParkingLot/ParkingLot/Edit/${id} #EditForm`, function () {
-        function EditSubmit() {
-            $(document).one('submit', '#EditForm', function (e) {
-                e.preventDefault(); // 防止默認提交行為
-                var formData = new FormData(this);
-                $.ajax({
-                    url: $(this).attr('action'), // 表單的 action URL
-                    type: 'POST',
-                    data: formData, // 將表單數據序列化
-                    contentType: false,
-                    processData: false,
-                    dataType: 'Json',
-                    success: function (response) {
-                        if (response.success) {
-                            // 如果成功，關閉模態視窗，並刷新頁面或局部刷新
-                            $('#EditModal').modal('hide');
-                            location.reload(); // 刷新特定部分
-                        } else {
-                            // 如果失敗，動態替換SweetAlert，顯示錯誤
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: "請填入必填欄位!",
-                            });
-                            EditSubmit();
-                        }
-                    }
+async function EditPark(id) {
+    console.log(id);
+    let response = await fetch(`/MyParkingLot/ParkingLot/EditPartial/${id}`);
+    let partialview = await response.text();
+    $('.ParkEdit').html(partialview);
+
+    $(document).off('submit', '#EditForm').on('submit', '#EditForm', async function (e) {
+        e.preventDefault();
+        let form = new FormData(this);
+        let fetchresponse = await fetch($(this).attr('action'), {
+            method: 'POST',
+            body: form
+        });
+        if (fetchresponse.ok) {
+            let result = await fetchresponse.json();
+            if (result.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "編輯成功!",
+                    showConfirmButton: false,
+                    timer: 1500
                 });
+                $('#EditModal').modal('hide');
+                $('#ParkLotTable').DataTable().ajax.reload(null, false);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: result.errors ? result.errors.join(", ") : result.message,
+                });
+            }
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "請求發生錯誤，請稍後再試",
             });
         }
-        EditSubmit();
-        $('#EditModal').modal('show');
     });
-});
+    $('#EditModal').modal('show');
+}
+$(document).on('click', '.EditBtn', function () {
+    var id = $(this).data('id');
+    EditPark(id);
+})
