@@ -6,13 +6,22 @@
     <div class="form-group">
         <label asp-for="LotName" class="control-label"></label>
         <input asp-for="LotName" class="form-control" />
-
         <span asp-validation-for="LotName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="LotAddress" class="control-label"></label>
         <input asp-for="LotAddress" class="form-control" />
         <span asp-validation-for="LotAddress" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Longitude" class="control-label"></label>
+        <input asp-for="Longitude" class="form-control" />
+        <span asp-validation-for="Longitude" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Latitude" class="control-label"></label>
+        <input asp-for="Latitude" class="form-control" />
+        <span asp-validation-for="Latitude" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Qty" class="control-label"></label>
@@ -43,7 +52,7 @@
         <label asp-for="Contract" class="control-label"></label>
 
         <span class="text-danger">必填</span>
-        <input type="file" id="ContractFile" name="ContractFile" class="form-cintrol" />
+        <input type="file" id="ContractFile" name="ContractFile" class="form-control" />
 
         @*顯示現有檔案*@
         @if (!string.IsNullOrEmpty(Model.Contract))

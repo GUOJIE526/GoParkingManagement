@@ -11,6 +11,10 @@ public partial class ParkingLot
 
     public string? LotAddress { get; set; }
 
+    public decimal? Longitude { get; set; }
+
+    public decimal? Latitude { get; set; }
+
     public int? Qty { get; set; }
 
     public int? Etcqty { get; set; }

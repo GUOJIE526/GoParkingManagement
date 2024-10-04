@@ -9,6 +9,8 @@ $('#ParkLotTable').dataTable({
     columns: [
         { data: 'lotName' },
         { data: 'lotAddress' },
+        { data: 'Longitude' },
+        { data: 'Latitude' },
         { data: 'qty' },
         { data: 'etcqty' },
         { data: 'monqty' },

@@ -10,20 +10,29 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" id="EditForm" class="col-md-12">
+        <form asp-action="Edit" id="EditForm" class="col-md-12" asp-route-id="@Model.LotId">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="LotId" />
             <div class="form-group">
                 <label asp-for="LotName" class="control-label"></label>
                 <input asp-for="LotName" class="form-control" />
-                
                 <span asp-validation-for="LotName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LotAddress" class="control-label"></label>
                 <input asp-for="LotAddress" class="form-control" />
                 <span asp-validation-for="LotAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Longitude" class="control-label"></label>
+                <input asp-for="Longitude" class="form-control" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label"></label>
+                <input asp-for="Latitude" class="form-control" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Qty" class="control-label"></label>
@@ -54,7 +63,7 @@
                 <label asp-for="Contract" class="control-label"></label>
 
                 <span class="text-danger">必填</span>
-                <input type="file" id="ContractFile" name="ContractFile" class="form-cintrol" />
+                <input type="file" id="ContractFile" name="ContractFile" class="form-control" />
 
                 @*顯示現有檔案*@
                 @if (!string.IsNullOrEmpty(Model.Contract))
@@ -63,7 +72,7 @@
                     <p>@Model.Contract</p>
                     <a href="@Url.Content("~/Contract/" + Model.Contract)" target="_blank"></a>
                 }
-               @*  <input asp-for="Contract" class="form-control" type="file" accept="image/*" /> *@
+                @*  <input asp-for="Contract" class="form-control" type="file" accept="image/*" /> *@
                 <span asp-validation-for="Contract" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -270,6 +270,12 @@ public partial class MyGoParkingContext : DbContext
             entity.Property(e => e.Etcqty).HasColumnName("etcqty");
             entity.Property(e => e.IsMonStatus).HasColumnName("is_mon_status");
             entity.Property(e => e.IsResStatus).HasColumnName("is_res_status");
+            entity.Property(e => e.Latitude)
+                .HasColumnType("decimal(18, 9)")
+                .HasColumnName("latitude");
+            entity.Property(e => e.Longitude)
+                .HasColumnType("decimal(18, 15)")
+                .HasColumnName("longitude");
             entity.Property(e => e.LotAddress).HasColumnName("lot_address");
             entity.Property(e => e.LotName).HasColumnName("lot_name");
             entity.Property(e => e.Monqty).HasColumnName("monqty");
