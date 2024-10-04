@@ -34,6 +34,12 @@ namespace MyGoParking.Controllers
             var MonthlyApply = _context.MonApplyList
                 .Where(s => s.ApplyStatus == "pending")
                 .Count();
+            var ParkingLot = await _context.ParkingLot
+                .Select(p => new ParkingLot
+                {
+                    LotName = p.LotName,
+                    Qty = p.Qty,
+                }).OrderByDescending(p => p.Qty).Take(5).ToListAsync();
 
             var overtimecount = _context.Reservation.Where(s => s.IsOverdue == false).Count();
             var AllReservationCount = _context.Reservation.Count();
@@ -51,7 +57,7 @@ namespace MyGoParking.Controllers
             ViewData["EntryExitSum"] = EntryExitSum;
             ViewData["MonthlyApply"] = MonthlyApply;
 
-            return View(_context.ParkingLot);
+            return View(ParkingLot);
         }
        
 
