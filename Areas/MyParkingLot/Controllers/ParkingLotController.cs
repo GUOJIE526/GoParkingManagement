@@ -30,13 +30,15 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
             return View(_context.ParkingLot);
         }
 
-        public IActionResult IndexJson()
+        public async Task<IActionResult> IndexJson()
         {
             var ParkLot = _context.ParkingLot.Select(p => new
             {
                 lotId = p.LotId,
                 lotName = p.LotName,
                 lotAddress = p.LotAddress,
+                longitude = p.Longitude ?? 0,
+                latitude = p.Latitude ?? 0,
                 qty = p.Qty,
                 etcqty = p.Etcqty,
                 monqty = p.Monqty,
@@ -127,7 +129,7 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LotId,LotName,LotAddress,Qty,Etcqty,Monqty,IsResStatus,IsMonStatus,Contract")] ParkingLot parkingLot, IFormFile ContractFile)
+        public async Task<IActionResult> Create([Bind("LotId,LotName,LotAddress,Longitude,Latitude,Qty,Etcqty,Monqty,IsResStatus,IsMonStatus,Contract")] ParkingLot parkingLot, IFormFile ContractFile)
         {
             ViewData["IsRes"] = new SelectList(new List<SelectListItem>
                 {
@@ -246,7 +248,7 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LotId,LotName,LotAddress,Qty,Etcqty,Monqty,IsResStatus,IsMonStatus,Contract")] ParkingLot parkingLot, IFormFile ContractFile)
+        public async Task<IActionResult> Edit(int id, [Bind("LotId,LotName,LotAddress,Longitude,Latitude,Qty,Etcqty,Monqty,IsResStatus,IsMonStatus,Contract")] ParkingLot parkingLot, IFormFile ContractFile)
         {
             ViewData["IsRes"] = new SelectList(new List<SelectListItem>
             {

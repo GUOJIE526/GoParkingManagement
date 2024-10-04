@@ -1,6 +1,6 @@
 ﻿// Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+Chart.defaults.font.family = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.font.color = '#858796';
 
 var ctxPie = document.getElementById("RevenuePieChart").getContext('2d');
 
@@ -20,7 +20,7 @@ $.ajax({
         data: {
             labels: ['停車收益', '預定違約金', '月租收益'], // 標籤
             datasets: [{
-                label: 'Revenue Distribution', // 數據標籤
+                label: '收益貢獻', // 數據標籤
                 data: [entryExitAmounts, reservationAmounts, monthlyRentalAmounts], // 將伺服器回傳的值放入數據
                 backgroundColor: [
                     'rgb(255, 99, 132)',
@@ -114,8 +114,8 @@ $.ajax({
 // 新的方法 盡量用減少Code的使用
 
 // Call the function to generate options when the page loads
-window.onload = function () {
-    
+$(function () {
+
     function generateMonthOptions(ID) {
         var select = document.getElementById(ID);
         var today = new Date();
@@ -132,7 +132,20 @@ window.onload = function () {
         select.selectedIndex = select.options.length - 1; //預設先使用selectlist最後一個
     }
 
-    function fetchAndUpdateChart(month,ChartID,creatChart,typeurl) {
+    //存全部chart
+    var chartInstances = {};
+
+    function fetchAndUpdateChart(month, ChartID, creatChart, typeurl) {
+
+        //找id後destroy chartInstances中的圖表
+        var chartID = ChartID.id;
+        if (chartInstances[chartID]) {
+            chartInstances[chartID].destroy();
+        };
+
+        var canvas = $('#' + chartID)[0];
+
+
         $.ajax({
             url: typeurl,
             type: "get",
@@ -141,18 +154,51 @@ window.onload = function () {
         }).done(function (data) {
             var labels = [];
             var dataresults = [];
-
             $.each(data, function (index, item) {
                 var formattedDate = new Date(item.daytime).toISOString().split('T')[0];
                 labels.push(formattedDate);
                 dataresults.push(item.amount);
             });
+            const ctx = document.getElementById(chartID).getContext('2d');
 
-            if (creatChart) {
-                creatChart.update(); // 清除之前的圖表實例
-            }
+            const totalDuration = 2500; // 總持續時間
+            const delayBetweenPoints = totalDuration / data.length; // 每個點的延遲
 
-            creatChart = new Chart(ChartID, {
+            // 獲取前一個 Y 值
+            const previousY = (ctx) => {
+                if (ctx.index === 0) return 0; // 第一個點的初始值
+                return ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
+            };
+
+            const animation = {
+                x: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: delayBetweenPoints,
+                    from: NaN,
+                    delay(ctx) {
+                        if (ctx.type !== 'data' || ctx.xStarted) {
+                            return 0;
+                        }
+                        ctx.xStarted = true;
+                        return ctx.index * delayBetweenPoints;
+                    }
+                },
+                y: {
+                    type: 'number',
+                    easing: 'linear',
+                    duration: delayBetweenPoints,
+                    from: previousY,
+                    delay(ctx) {
+                        if (ctx.type !== 'data' || ctx.yStarted) {
+                            return 0;
+                        }
+                        ctx.yStarted = true;
+                        return ctx.index * delayBetweenPoints;
+                    }
+                }
+            };
+            chartInstances[chartID] = new Chart(ChartID, {
                 type: 'line',
                 data: {
                     labels: labels,
@@ -161,10 +207,12 @@ window.onload = function () {
                         data: dataresults,
                         borderWidth: 1,
                         borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)'
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill:true
                     }]
                 },
                 options: {
+                    //animation,
                     scales: {
                         x: {
                             type: 'category', // 如果 datetime 是標籤類型
@@ -176,7 +224,7 @@ window.onload = function () {
                                 maxRotation: 90,
                                 minRotation: 45
                             }
-                        },
+                        },                        
                         y: {
                             beginAtZero: true,
                             title: {
@@ -184,16 +232,18 @@ window.onload = function () {
                                 text: '金額'
                             }
                         }
-                    }
+                        
+                    }                    
                 }
             });
         }).fail(function (err) {
             alert(err.statusText);
         });
-    }
+    };
+
 
     //生成select + chart的方法
-    function createChart(selectlist,chartID,createchart,typeselectlist) {
+    function createChart(selectlist, chartID, createchart, typeselectlist) {
         generateMonthOptions(selectlist.id);// 調用上面的方法 新增一個selectlist
         var typeurl;
         //先偵測要生成的type
@@ -254,8 +304,6 @@ window.onload = function () {
     var selectlistMonthlyRental = document.getElementById("monthFilterMS");
     var TypeselectlistMonthlyRental = document.getElementById("typeFilterMS");
     createChart(selectlistMonthlyRental, ctxlineMS, mylineChartMS, TypeselectlistMonthlyRental);
-
-
-};
+});
 
 

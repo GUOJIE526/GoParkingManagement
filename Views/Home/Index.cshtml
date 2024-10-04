@@ -157,7 +157,7 @@
             </div>
             
         <!-- Content Row -->
-        <div class="row">
+        <div class="row d-flex justify-content-between">
 
             <!-- Content Column -->
             <div class="col-lg-6 mb-4">
@@ -176,7 +176,7 @@
             </div>
                 <!-- Pie Chart -->
                 @* <div class="col-xl-4 col-lg-5"> *@
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -210,26 +210,45 @@
 
 <!--新增的營業額圖表 上面已經有圓餅圖了 這邊是折線圖-->
 <div class="row">
-    <div class="col-12 col-md-6">
-        <div class="d-flex justify-content-between">
-            <select id="monthFilterES" class="form-select w-50"></select>
-            <select id="typeFilterES" class="form-select w-50">
-                <option value="EntryExit">停車</option>
-                <option value="MonthlyRental">月租</option>
-            </select>
+    <div class="col-lg-12 mb-4 row">
+        <div class="col-6">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-midi">營業額</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <select id="monthFilterES" class="form-select w-50"></select>
+                        <select id="typeFilterES" class="form-select w-50">
+                            <option value="EntryExit">停車</option>
+                            <option value="MonthlyRental">月租</option>
+                        </select>
+                    </div>
+                    <canvas id="lineChartES" width="300" height="200"></canvas>
+                </div>
+            </div>
         </div>
-        <canvas id="lineChartES" width="300" height="200"></canvas>
-
-    </div>
-    <div class="col-12 col-md-6">
-        <div class="d-flex justify-content-between">
-            <select id="monthFilterMS" class="form-select w-50"></select>
-            <select id="typeFilterMS" class="form-select w-50">
-                <option value="MonthlyRental">月租</option>
-                <option value="EntryExit">停車</option>
-            </select>
+        <div class="col-6">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-midi">營業額</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <select id="monthFilterMS" class="form-select w-50"></select>
+                        <select id="typeFilterMS" class="form-select w-50">
+                            <option value="MonthlyRental">月租</option>
+                            <option value="EntryExit">停車</option>
+                        </select>
+                    </div>
+                    <canvas id="lineChartMS" width="300" height="200"></canvas>
+                </div>
+            </div>
         </div>
-        <canvas id="lineChartMS" width="300" height="200"></canvas>
     </div>
 </div>
 

@@ -9,6 +9,8 @@ $('#ParkLotTable').dataTable({
     columns: [
         { data: 'lotName' },
         { data: 'lotAddress' },
+        { data: 'longitude' },
+        { data: 'latitude' },
         { data: 'qty' },
         { data: 'etcqty' },
         { data: 'monqty' },
@@ -37,7 +39,6 @@ $('#ParkLotTable').dataTable({
         url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/zh-HANT.json',
     },
 });
-
 
 //動態加載Create內容
 async function CreatePopup() {

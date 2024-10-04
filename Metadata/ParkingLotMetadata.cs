@@ -14,6 +14,13 @@ namespace MyGoParking.Metadata
         [Required(ErrorMessage = "請選擇")]
         [Display(Name = "停車場地址")]
         public string? LotAddress { get; set; }
+
+        [Display(Name = "經度")]
+        public decimal? Longitude { get; set; }
+
+        [Display(Name = "緯度")]
+        public decimal? Latitude { get; set; }
+
         [Required(ErrorMessage = "請選擇")]
         [Display(Name = "車位數量")]
         public int? Qty { get; set; }

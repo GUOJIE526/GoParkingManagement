@@ -26,6 +26,18 @@
                 <span asp-validation-for="LotAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Longitude" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="Longitude" class="form-control" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latitude" class="control-label"></label>
+                <span class="text-danger">必填</span>
+                <input asp-for="Latitude" class="form-control" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Qty" class="control-label"></label>
                 <span class="text-danger">必填</span>
                 <input asp-for="Qty" class="form-control" />
@@ -44,7 +56,7 @@
                 <span asp-validation-for="Monqty" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsResStatus" class="control-label"></label>          
+                <label asp-for="IsResStatus" class="control-label"></label>
                 <select asp-for="IsResStatus" class="form-control" asp-items="ViewBag.IsRes"></select>
                 <span asp-validation-for="IsResStatus" class="text-danger"></span>
             </div>
