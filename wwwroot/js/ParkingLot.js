@@ -40,7 +40,6 @@ $('#ParkLotTable').dataTable({
     },
 });
 
-
 //動態加載Create內容
 async function CreatePopup() {
     let response = await fetch('/MyParkingLot/ParkingLot/CreatePartial');

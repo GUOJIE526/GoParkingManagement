@@ -30,7 +30,7 @@ namespace MyGoParking.Areas.MyParkingLot.Controllers
             return View(_context.ParkingLot);
         }
 
-        public IActionResult IndexJson()
+        public async Task<IActionResult> IndexJson()
         {
             var ParkLot = _context.ParkingLot.Select(p => new
             {
